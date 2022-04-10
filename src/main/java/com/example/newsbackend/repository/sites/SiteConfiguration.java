@@ -14,9 +14,10 @@ public class SiteConfiguration {
     private String siteCountry;
     @Enumerated(EnumType.ORDINAL)
     private DefaultScrapingType scrapingType = DefaultScrapingType.STATIC;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<SelectorQuery> scrapeQueries;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

@@ -12,13 +12,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class HtmlExtractorTest {
+class TextExtractorTest {
 
-    private HtmlExtractor htmlExtractorUnderTest;
+    private TextExtractor textExtractorUnderTest;
 
     @BeforeEach
     void setUp() {
-        htmlExtractorUnderTest = new HtmlExtractor();
+        textExtractorUnderTest = new TextExtractor();
     }
 
     @Test
@@ -28,7 +28,7 @@ class HtmlExtractorTest {
         final InputStream inputStream = new ByteArrayInputStream(expectResult.getBytes());
 
         // Then
-        final String result = htmlExtractorUnderTest.extractHtmlFromInputStream(inputStream);
+        final String result = textExtractorUnderTest.extractTextFromInputStream(inputStream);
 
         // Verify
         assertThat(result).isEqualTo(expectResult);
@@ -41,7 +41,7 @@ class HtmlExtractorTest {
         final InputStream inputStream = InputStream.nullInputStream();
         final String expectResult = "";
         // Run the test
-        final String result = htmlExtractorUnderTest.extractHtmlFromInputStream(inputStream);
+        final String result = textExtractorUnderTest.extractTextFromInputStream(inputStream);
 
         // Verify the results
         assertThat(result).isEqualTo(expectResult);
@@ -56,7 +56,7 @@ class HtmlExtractorTest {
         when(mockInputStream.read()).thenThrow(IOException.class);
 
         // Verify
-        assertThatThrownBy(() -> htmlExtractorUnderTest.extractHtmlFromInputStream(mockInputStream))
+        assertThatThrownBy(() -> textExtractorUnderTest.extractTextFromInputStream(mockInputStream))
                 .isInstanceOf(IOException.class);
     }
 

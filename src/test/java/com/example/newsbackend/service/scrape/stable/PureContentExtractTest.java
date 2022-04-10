@@ -22,13 +22,13 @@ class PureContentExtractTest {
     @Mock
     private DownloadPage mockDownloadPage;
     @Mock
-    private HtmlExtractor mockHtmlExtractor;
+    private TextExtractor mockTextExtractor;
 
     private PureContentExtract pureContentExtractUnderTest;
 
     @BeforeEach
     void setUp() {
-        pureContentExtractUnderTest = new PureContentExtract(mockDownloadPage, mockHtmlExtractor);
+        pureContentExtractUnderTest = new PureContentExtract(mockDownloadPage, mockTextExtractor);
     }
 
     @Test
@@ -38,7 +38,7 @@ class PureContentExtractTest {
 
         //When
         when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockHtmlExtractor.extractHtmlFromInputStream(spyInputStream)).thenReturn("result");
+        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenReturn("result");
 
         // Then
         final String result = pureContentExtractUnderTest.extract("https://example.com/");
@@ -46,7 +46,7 @@ class PureContentExtractTest {
         // Verify
         assertThat(result).isEqualTo("result");
         verify(mockDownloadPage,times(1)).getPageInputStream(any(URL.class));
-        verify(mockHtmlExtractor,times(1)).extractHtmlFromInputStream(any(InputStream.class));
+        verify(mockTextExtractor,times(1)).extractTextFromInputStream(any(InputStream.class));
     }
 
     @Test
@@ -56,7 +56,7 @@ class PureContentExtractTest {
 
         // When
         when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockHtmlExtractor.extractHtmlFromInputStream(spyInputStream)).thenReturn("");
+        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenReturn("");
 
         // Then
         final String result = pureContentExtractUnderTest.extract("https://example.com/");
@@ -82,7 +82,7 @@ class PureContentExtractTest {
         final InputStream spyInputStream = spy(new ByteArrayInputStream("content".getBytes()));
         //When
         when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockHtmlExtractor.extractHtmlFromInputStream(spyInputStream)).thenThrow(IOException.class);
+        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenThrow(IOException.class);
 
         // Verify
         assertThatThrownBy(() -> pureContentExtractUnderTest.extract("https://example.com/")).isInstanceOf(IOException.class);

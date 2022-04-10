@@ -1,7 +1,5 @@
 package com.example.newsbackend.service.scrape.stable;
 
-import com.example.newsbackend.service.scrape.stable.DownloadPage;
-import com.example.newsbackend.service.scrape.stable.HtmlExtractor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,15 +10,19 @@ import java.net.URL;
 public class PureContentExtract {
 
     private final DownloadPage downloadPage;
-    private final HtmlExtractor htmlExtractor;
+    private final TextExtractor textExtractor;
 
-    public PureContentExtract(DownloadPage downloadPage, HtmlExtractor htmlExtractor) {
+    public PureContentExtract(DownloadPage downloadPage, TextExtractor textExtractor) {
         this.downloadPage = downloadPage;
-        this.htmlExtractor = htmlExtractor;
+        this.textExtractor = textExtractor;
     }
 
     public String extract(String url) throws IOException {
-        InputStream inputStream = downloadPage.getPageInputStream(new URL(url));
-        return htmlExtractor.extractHtmlFromInputStream(inputStream);
+        String encodeUrl = encodeUrl(url);
+        InputStream inputStream = downloadPage.getPageInputStream(new URL(encodeUrl));
+        return textExtractor.extractTextFromInputStream(inputStream);
+    }
+    private String encodeUrl(String url)  {
+        return url.replace(" ", "%20");
     }
 }

@@ -1,61 +1,68 @@
 package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.page.PageContent;
 import com.example.newsbackend.repository.page.PageHeadline;
-import com.example.newsbackend.repository.search.SearchEngine;
-import com.example.newsbackend.repository.search.SearchEngineRepository;
-import com.example.newsbackend.repository.sites.SiteConfiguration;
-import com.example.newsbackend.service.scrape.dynamic.DynamicScrapingBot;
 import com.example.newsbackend.service.scrape.ScrapingException;
 import com.example.newsbackend.service.scrape.stable.ParseValues;
-import com.example.newsbackend.service.tools.PageScrapeTool;
+import com.example.newsbackend.service.serp.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class SearchNewsPageServiceImpl implements SearchNewsPageService {
 
 
-    private final SearchQueryBuilder searchQueryBuilder;
-    private final PageScrapeTool pageScrapeTool;
-    private final SearchEngineRepository searchEngineRepository;
+    private final ScaleAPIRequest scaleAPIRequest;
+    @Value("${scale.apikey}")
+    private  String apikey;
+    private static final String SEARCH_TYPE = "news";
+
+
     @Autowired
-    public SearchNewsPageServiceImpl(SearchQueryBuilder searchQueryBuilder, PageScrapeTool pageScrapeTool, SearchEngineRepository searchEngineRepository) {
-        this.searchQueryBuilder = searchQueryBuilder;
-        this.pageScrapeTool = pageScrapeTool;
-        this.searchEngineRepository = searchEngineRepository;
-    }
-
-    public List<PageHeadline> search(String keyword) throws ScrapingException {
-
-
-        SearchEngine searchEngine = getActiveSearchEngine()
-                .orElseThrow(() -> new ScrapingException("No active search engine"));
-        String urlQuery = searchQueryBuilder.build(keyword, searchEngine);
-        SiteConfiguration siteConfiguration = searchEngine.getSiteConfiguration();
-        List<ParseValues> parseValues = pageScrapeTool.scrape(siteConfiguration,urlQuery);
-        return pageContentToHeadline(parseValues);
-    }
-
-    private List<PageHeadline> pageContentToHeadline(List<ParseValues> parseValues) {
-
-        List<PageHeadline> pageHeadlines = parseValues
-                .stream()
-                .map(AttributesContent::contentToHeadline)
-                .collect(Collectors.toList());
-        return pageHeadlines;
+    public SearchNewsPageServiceImpl(ScaleAPIRequest scaleAPIRequest) {
+        this.scaleAPIRequest = scaleAPIRequest;
     }
 
 
-    private Optional<SearchEngine> getActiveSearchEngine() {
-        Iterator<SearchEngine> iterator = searchEngineRepository.findByActiveTrue().iterator();
-        if (!iterator.hasNext()) {
-            return Optional.empty();
+    @Override
+    public List<NewsResultPage> search(Map<String, String> params) throws  ScaleAPIException {
+
+        RequestParameters requestParameters = new RequestParameters.Builder()
+                .addApiKey(apikey)
+                .addQuery(params.get(SearchParameters.QUERY.getValue()))
+                .addGoogleUILanguage(params.get(SearchParameters.LANGUAGE.getValue()))
+                .addSortBy(params.get(SearchParameters.SORT_BY.getValue()))
+                .addPage(params.get(SearchParameters.PAGE.getValue()))
+                .addGoogleCountry(params.get(SearchParameters.COUNTRY.getValue()))
+                .addLocation(params.get(SearchParameters.LOCATION.getValue()))
+                .addSearchType(SEARCH_TYPE)
+                .build();
+        System.out.println(requestParameters.getParameters());
+        APIResponse response = scaleAPIRequest.getResponse(requestParameters);
+        return response.getNewsResultPages();
+    }
+    public enum SearchParameters{
+        QUERY("q"), // Search query
+        LANGUAGE("lang"), // Search results language
+        SORT_BY("sortBy"), // Sort search by
+        PAGE("page"), // Total pages
+        COUNTRY("country"), // Search in country
+        LOCATION("location"); // Search location
+
+        private String value;
+
+        SearchParameters(String value) {
+            this.value = value;
         }
 
-        return Optional.of(iterator.next());
+        public String getValue() {
+            return value;
+        }
     }
+
 }

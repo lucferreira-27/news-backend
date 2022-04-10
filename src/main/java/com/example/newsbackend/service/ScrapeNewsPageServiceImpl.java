@@ -6,10 +6,12 @@ import com.example.newsbackend.repository.sites.RegisteredSite;
 import com.example.newsbackend.service.scrape.ScrapingException;
 import com.example.newsbackend.service.scrape.stable.ParseValues;
 import com.example.newsbackend.service.tools.PageScrapeTool;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
     private final PageValidator pageValidator;
     private final PageScrapeTool pageScrapeTool;

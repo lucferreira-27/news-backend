@@ -37,7 +37,13 @@ public class ParseValues {
         return node;
     }
 
-
+    @Override
+    public String toString() {
+        return "ParseValues{" +
+                "mapper=" + mapper +
+                ", values=" + values +
+                '}';
+    }
 }
 
 

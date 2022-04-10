@@ -1,13 +1,11 @@
 package com.example.newsbackend.repository.sites;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class SelectorQuery {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne
@@ -15,6 +13,13 @@ public class SelectorQuery {
 
     private String selector;
     private String attribute;
+
+    public SelectorQuery() {
+    }
+    public SelectorQuery(String selector, String attribute) {
+        this.selector = selector;
+        this.attribute = attribute;
+    }
 
     public Long getId() {
         return id;
