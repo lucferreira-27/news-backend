@@ -6,6 +6,7 @@ import com.example.newsbackend.repository.sites.RegisteredSite;
 import com.example.newsbackend.repository.sites.SelectorQuery;
 import com.example.newsbackend.repository.sites.SiteConfiguration;
 import com.example.newsbackend.service.scrape.stable.ParseValues;
+import com.example.newsbackend.service.serp.NewsResultPage;
 import com.example.newsbackend.service.tools.PageScrapeTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -44,32 +46,31 @@ class ScrapeNewsPageServiceImplTest {
 
 
         //Given
-        final PageHeadline headline = new PageHeadline(
-                "headline",
-                "title");
+        final NewsResultPage newsResultPage = new NewsResultPage();
+        newsResultPage.setLink("https://test/test");
+        newsResultPage.setTitle("testTitle");
         final PageBody expectPageBody = new PageBody(
-                headline,
+                newsResultPage,
                 "content");
 
-        final ParseValues parseValues = new ParseValues(List.of(expectPageBody.getTextContent()));
+        final ParseValues parseValues = new ParseValues(Map.of("text","content"));
 
         final RegisteredSite registeredSite = createRegisteredSite();
         final List<ParseValues> expectParseValues = List.of(parseValues);
 
         // When
-        when(mockPageValidator.validatePage(any(String.class))).thenReturn(registeredSite);
+        when(mockPageValidator.validatePage("https://test")).thenReturn(registeredSite);
         when(mockPageScrapeTool.scrape(any(SiteConfiguration.class),any(String.class))).thenReturn(expectParseValues);
 
         // Run the test
-        final List<PageBody> result = scrapeNewsPageServiceImplUnderTest.scrapeNewsPages(List.of(headline));
+        final PageBody result = scrapeNewsPageServiceImplUnderTest.scrapeNewsPages(newsResultPage);
 
         // Verify the results
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getPageHeadline()).isEqualTo(expectPageBody.getPageHeadline());
-        assertThat(result.get(0).getTextContent()).isEqualTo(expectPageBody.getTextContent());
+        assertThat(result).isNotNull();
+        assertThat(result.getTextContent()).isEqualTo(expectPageBody.getTextContent());
 
 
-        verify(mockPageValidator, times(1)).validatePage(headline.getUrl());
+        verify(mockPageValidator, times(1)).validatePage("https://test");
         verify(mockPageScrapeTool, times(1)).scrape(any(SiteConfiguration.class),any(String.class));
 
 
@@ -103,19 +104,18 @@ class ScrapeNewsPageServiceImplTest {
     void if_Page_Is_Not_Valid_Should_Throw_PageValidatorException() throws Exception {
 
         //Given
-        final PageHeadline headline = new PageHeadline(
-                "headline",
-                "title");
-
+        final NewsResultPage newsResultPage = new NewsResultPage();
+        newsResultPage.setLink("testLink");
+        newsResultPage.setTitle("testTitle");
         // When
         when(mockPageValidator.validatePage(any(String.class))).thenThrow(PageValidatorException.class);
 
         // Run the test
-        assertThatThrownBy(() -> scrapeNewsPageServiceImplUnderTest.scrapeNewsPages(List.of(headline)))
+        assertThatThrownBy(() -> scrapeNewsPageServiceImplUnderTest.scrapeNewsPages(newsResultPage))
                 .isInstanceOf(PageValidatorException.class);
 
         // Verify the results
-        verify(mockPageValidator, times(1)).validatePage(headline.getUrl());
+        verify(mockPageValidator, times(1)).validatePage(newsResultPage.getLink());
         verify(mockPageScrapeTool, never()).scrape(any(SiteConfiguration.class),any(String.class));
 
     }

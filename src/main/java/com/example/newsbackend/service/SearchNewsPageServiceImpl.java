@@ -32,7 +32,15 @@ public class SearchNewsPageServiceImpl implements SearchNewsPageService {
     @Override
     public List<NewsResultPage> search(Map<String, String> params) throws  ScaleAPIException {
 
-        RequestParameters requestParameters = new RequestParameters.Builder()
+        RequestParameters requestParameters = buildRequestParameters(params);
+        APIResponse response = scaleAPIRequest.getResponse(requestParameters);
+        if(response.getNewsResultPages().size() == 0){
+            throw new ScaleAPIException("No results found for query \"" + requestParameters.getQuery() + "\"");
+        };
+        return response.getNewsResultPages();
+    }
+    private RequestParameters buildRequestParameters(Map<String, String> params){
+        return new RequestParameters.Builder()
                 .addApiKey(apikey)
                 .addQuery(params.get(SearchParameters.QUERY.getValue()))
                 .addGoogleUILanguage(params.get(SearchParameters.LANGUAGE.getValue()))
@@ -42,9 +50,6 @@ public class SearchNewsPageServiceImpl implements SearchNewsPageService {
                 .addLocation(params.get(SearchParameters.LOCATION.getValue()))
                 .addSearchType(SEARCH_TYPE)
                 .build();
-        System.out.println(requestParameters.getParameters());
-        APIResponse response = scaleAPIRequest.getResponse(requestParameters);
-        return response.getNewsResultPages();
     }
     public enum SearchParameters{
         QUERY("q"), // Search query

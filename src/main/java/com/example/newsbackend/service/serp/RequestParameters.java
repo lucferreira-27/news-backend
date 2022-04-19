@@ -36,6 +36,49 @@ public class RequestParameters {
         this.includeHtml = includeHtml;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public String getQuery() {
+        return q;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getTimePeriod() {
+        return timePeriod;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public String getGl() {
+        return gl;
+    }
+
+    public String getHl() {
+        return hl;
+    }
+
+    public boolean isIncludeHtml() {
+        return includeHtml;
+    }
 
 
     public String getParameters() {

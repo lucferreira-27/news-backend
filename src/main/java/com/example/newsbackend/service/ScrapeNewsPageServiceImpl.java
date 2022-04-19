@@ -5,6 +5,7 @@ import com.example.newsbackend.repository.page.PageHeadline;
 import com.example.newsbackend.repository.sites.RegisteredSite;
 import com.example.newsbackend.service.scrape.ScrapingException;
 import com.example.newsbackend.service.scrape.stable.ParseValues;
+import com.example.newsbackend.service.serp.NewsResultPage;
 import com.example.newsbackend.service.tools.PageScrapeTool;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +22,13 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
         this.pageScrapeTool = pageScrapeTool;
     }
 
+
     @Override
-    public List<PageBody> scrapeNewsPages(List<PageHeadline> pageHeadlines) throws PageValidatorException, ScrapingException {
-        List<PageBody> pagesContents = new ArrayList<>();
-        for (PageHeadline headline : pageHeadlines) {
-            ParseValues parseValue = getParseValueByUrl(headline.getUrl());
-            PageBody pageBody = createPageBody(headline, parseValue.getValues().get(0));
-            pagesContents.add(pageBody);
-        }
-        return pagesContents;
+    public PageBody scrapeNewsPages(NewsResultPage searchResult) throws PageValidatorException, ScrapingException {
+
+        ParseValues parseValue = getParseValueByUrl(searchResult.getLink());
+        PageBody pageBody = new PageBody(searchResult, parseValue.getValues().get("text"));
+        return pageBody;
     }
 
     private ParseValues getParseValueByUrl(String url) throws PageValidatorException, ScrapingException {
@@ -39,17 +38,14 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
     }
 
     private RegisteredSite getRegisteredSiteByURL(String url) throws PageValidatorException {
-        RegisteredSite registeredSite = pageValidator.validatePage(url);
+        String testUrl = url.substring(0, url.indexOf("/", 8));
+        RegisteredSite registeredSite = pageValidator.validatePage(testUrl);
         return registeredSite;
     }
 
     private ParseValues scrapeRegisteredSite(RegisteredSite registeredSite, String url) throws ScrapingException {
         List<ParseValues> pagesContents = pageScrapeTool.scrape(registeredSite.getSiteConfiguration(), url);
         return pagesContents.get(0);
-    }
-
-    private PageBody createPageBody(PageHeadline headline, String textContent) {
-        return new PageBody(headline, textContent);
     }
 
 

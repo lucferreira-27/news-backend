@@ -5,43 +5,33 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParseValues {
 
-    private ObjectMapper mapper = new ObjectMapper();
-    private List<String> values = new ArrayList<>();
+    private Map<String,String> values = new HashMap<>();
 
     public ParseValues() {
     }
 
-    public ParseValues(List<String> values) {
+    public ParseValues(Map<String,String> values) {
         this.values = values;
     }
 
-
     public void addValue(String attribute, String value) {
-        String json = String.format("{\"%s\":\"%s\"}",attribute,value);
-        values.add(json);
+       values.put(attribute,value);
     }
 
-    public List<String> getValues() {
+    public Map<String, String> getValues() {
         return values;
-    }
-
-    public String getConcatenatedJsonValues() {
-        return values.stream().reduce((a, b) -> a.replaceFirst("\\}","") + ", " + b.replaceFirst("\\{","")).get();
-    }
-    public JsonNode getJsonValues() throws JsonProcessingException {
-        JsonNode node = mapper.readTree(getConcatenatedJsonValues());
-        return node;
     }
 
     @Override
     public String toString() {
         return "ParseValues{" +
-                "mapper=" + mapper +
-                ", values=" + values +
+                "values=" + values +
                 '}';
     }
 }

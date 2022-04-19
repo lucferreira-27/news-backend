@@ -24,7 +24,7 @@ public class PageValidator {
     }
 
     private Optional<RegisteredSite> getRegisteredSiteByURL(String url) {
-        Iterator<RegisteredSite> iterator = registeredSiteRepository.findByUrl(url).iterator();
+        Iterator<RegisteredSite> iterator = registeredSiteRepository.findByUrlContaining(url).iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();
         }

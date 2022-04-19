@@ -2,6 +2,8 @@ package com.example.newsbackend.service.scrape.stable;
 
 import com.example.newsbackend.repository.sites.SelectorQuery;
 import com.example.newsbackend.service.scrape.SelectorQueryException;
+import org.assertj.core.api.Assertions;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 class HtmlParserTest {
 
@@ -39,17 +44,14 @@ class HtmlParserTest {
         final List<ParseValues> result = htmlParserUnderTest.parse(testHtml, scrapeQueries);
 
         // Verify
-        assertThat(result).hasSize(3);
-        assertThat(result.get(0).getConcatenatedJsonValues()).isEqualTo("{\"text\":\"Title 01\", \"href\":\"http://www.01.com\"}");
-        assertThat(result.get(0).getValues()).containsExactly("{\"text\":\"Title 01\"}", "{\"href\":\"http://www.01.com\"}");
-        assertThat(result.get(1).getValues()).containsExactly("{\"text\":\"Title 02\"}", "{\"href\":\"http://www.02.com\"}");
-        assertThat(result.get(2).getValues()).containsExactly("{\"text\":\"Title 03\"}", "{\"href\":\"http://www.03.com\"}");
-        assertThat(result.get(0).getJsonValues().path("text").asText()).isEqualTo("Title 01");
-        assertThat(result.get(0).getJsonValues().path("href").asText()).isEqualTo("http://www.01.com");
-        assertThat(result.get(1).getJsonValues().path("text").asText()).isEqualTo("Title 02");
-        assertThat(result.get(1).getJsonValues().path("href").asText()).isEqualTo("http://www.02.com");
-        assertThat(result.get(2).getJsonValues().path("text").asText()).isEqualTo("Title 03");
-        assertThat(result.get(2).getJsonValues().path("href").asText()).isEqualTo("http://www.03.com");
+        Assertions.assertThat(result).hasSize(3);
+        Assertions.assertThat(result.get(0).getValues().get("text")).isEqualTo("Title 01");
+        Assertions.assertThat(result.get(0).getValues().get("href")).isEqualTo("http://www.01.com");
+        Assertions.assertThat(result.get(1).getValues().get("text")).isEqualTo("Title 02");
+        Assertions.assertThat(result.get(1).getValues().get("href")).isEqualTo("http://www.02.com");
+        Assertions.assertThat(result.get(2).getValues().get("text")).isEqualTo("Title 03");
+        Assertions.assertThat(result.get(2).getValues().get("href")).isEqualTo("http://www.03.com");
+
 
     }
 
@@ -89,13 +91,15 @@ class HtmlParserTest {
         final List<ParseValues> result = htmlParserUnderTest.parse(testHtml, scrapeQueries);
 
         // Verify
-        assertThat(result).hasSize(3);
-        assertThat(result.get(0).getJsonValues().path("text").asText()).isEmpty();
-        assertThat(result.get(0).getJsonValues().path("href").asText()).isEqualTo("http://www.01.com");
-        assertThat(result.get(1).getJsonValues().path("text").asText()).isEmpty();
-        assertThat(result.get(1).getJsonValues().path("href").asText()).isEqualTo("http://www.02.com");
-        assertThat(result.get(2).getJsonValues().path("text").asText()).isEmpty();
-        assertThat(result.get(2).getJsonValues().path("href").asText()).isEqualTo("http://www.03.com");
+        assertThat(result,hasSize(3));
+
+        MatcherAssert.assertThat(result.get(0).getValues().get("text"), is(emptyString()));
+        MatcherAssert.assertThat(result.get(0).getValues().get("href"), is("http://www.01.com"));
+        MatcherAssert.assertThat(result.get(1).getValues().get("text"), is(emptyString()));
+        MatcherAssert.assertThat(result.get(1).getValues().get("href"), is("http://www.02.com"));
+        MatcherAssert.assertThat(result.get(2).getValues().get("text"), is(emptyString()));
+        MatcherAssert.assertThat(result.get(2).getValues().get("href"), is("http://www.03.com"));
+
 
     }
     @Test

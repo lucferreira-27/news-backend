@@ -25,8 +25,8 @@ public class ScaleAPIRequest implements APIRequest {
     @Override
     public APIResponse getResponse(RequestParameters requestParameters) throws ScaleAPIException {
         try{
-            String requestUrl = urlCustom.buildParametersURL(BASE_URL,requestParameters);
-            String response = httpRequest.sendRequest(new URL(requestUrl));
+            URL requestUrl = urlCustom.buildParametersURL(BASE_URL,requestParameters);
+            String response = httpRequest.sendRequest(requestUrl);
             return jsonParse(response);
         }catch (Exception e){
             throw new ScaleAPIException(e.getMessage(),e);

@@ -1,11 +1,13 @@
 package com.example.newsbackend.repository.page;
 
+import com.example.newsbackend.service.serp.NewsResultPage;
+
 public class PageBody implements PageContent{
     private String textContent;
-    private PageHeadline pageHeadline;
-    public PageBody(PageHeadline pageHeadline,String textContent) {
+    private NewsResultPage newsResultPage;
+    public PageBody(NewsResultPage pageHeadline, String textContent) {
         this.textContent = textContent;
-        this.pageHeadline = pageHeadline;
+        this.newsResultPage = pageHeadline;
     }
 
 
@@ -13,7 +15,8 @@ public class PageBody implements PageContent{
     public String getTextContent() {
         return textContent;
     }
-    public PageHeadline getPageHeadline() {
-        return pageHeadline;
+
+    public NewsResultPage getNewsResultPage() {
+        return newsResultPage;
     }
 }

@@ -65,7 +65,11 @@
             <version>3.4.4</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.ibm.watson</groupId>
+            <artifactId>ibm-watson</artifactId>
+            <version>10.0.0</version>
+        </dependency>
 
 
     </dependencies>

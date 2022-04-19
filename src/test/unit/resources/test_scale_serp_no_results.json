@@ -1,0 +1,26 @@
+{
+  "request_info": {
+    "success": true,
+    "credits_used": 30,
+    "credits_used_this_request": 1,
+    "credits_remaining": 95,
+    "credits_reset_at": "2022-05-05T23:46:59.000Z"
+  },
+  "search_metadata": {
+    "created_at": "2022-04-18T21:19:58.073Z",
+    "processed_at": "2022-04-18T21:19:58.992Z",
+    "total_time_taken": 0.92,
+    "engine_url": "https://www.google.com/search?q=djafjhsaefhwukfhkufhjkusrhfkuhbkjgdvbhkbnkhgd&tbm=nws",
+    "html_url": "https://api.scaleserp.com/search?api_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&q=djafjhsaefhwukfhkufhjkusrhfkuhbkjgdvbhkbnkhgd&search_type=news&engine=google&output=html",
+    "json_url": "https://api.scaleserp.com/search?api_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&q=djafjhsaefhwukfhkufhjkusrhfkuhbkjgdvbhkbnkhgd&search_type=news&engine=google&output=json"
+  },
+  "search_parameters": {
+    "q": "no_results_query",
+    "search_type": "news"
+  },
+  "search_information": {
+    "original_query_yields_zero_results": false,
+    "query_displayed": "no_results_query",
+    "detected_location": "France"
+  }
+}

@@ -2,6 +2,8 @@ package com.example.newsbackend.repository.history;
 
 
 
+import com.example.newsbackend.repository.history.ContentAnaliseResult;
+
 import javax.persistence.Entity;
 
 @Entity
