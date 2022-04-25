@@ -1,4 +1,4 @@
-package com.example.newsbackend.repository.history.analise;
+package com.example.newsbackend.repository.storage.analise;
 
 import javax.persistence.*;
 

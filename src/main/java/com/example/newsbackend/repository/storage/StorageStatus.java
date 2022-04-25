@@ -1,4 +1,4 @@
-package com.example.newsbackend.repository.history;
+package com.example.newsbackend.repository.storage;
 
 public enum StorageStatus {
     SUCCESS,

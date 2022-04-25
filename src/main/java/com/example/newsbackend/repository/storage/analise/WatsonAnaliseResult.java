@@ -1,15 +1,12 @@
-package com.example.newsbackend.repository.history.analise;
+package com.example.newsbackend.repository.storage.analise;
 
 
 
-import com.example.newsbackend.service.serp.APIResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;

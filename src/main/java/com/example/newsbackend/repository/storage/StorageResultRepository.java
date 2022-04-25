@@ -1,4 +1,4 @@
-package com.example.newsbackend.repository.history;
+package com.example.newsbackend.repository.storage;
 
 import org.springframework.data.repository.CrudRepository;
 

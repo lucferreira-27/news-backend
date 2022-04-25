@@ -1,6 +1,4 @@
-package com.example.newsbackend.repository.history.analise;
-
-import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
+package com.example.newsbackend.repository.storage.analise;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

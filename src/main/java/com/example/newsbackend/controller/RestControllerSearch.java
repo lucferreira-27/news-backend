@@ -1,13 +1,10 @@
 package com.example.newsbackend.controller;
 
-import com.example.newsbackend.repository.history.StorageResult;
+import com.example.newsbackend.repository.storage.StorageResult;
 import com.example.newsbackend.service.ResultAnalysisServiceImpl;
 import com.example.newsbackend.service.SearchNewsPageServiceImpl;
-import com.example.newsbackend.service.nlu.watson.WatsonAnalyze;
-import com.example.newsbackend.service.nlu.watson.WatsonAnalyzeOptions;
 import com.example.newsbackend.service.serp.NewsResultPage;
 import com.example.newsbackend.service.serp.ScaleAPIException;
-import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

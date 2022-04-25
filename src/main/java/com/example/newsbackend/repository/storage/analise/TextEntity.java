@@ -1,4 +1,4 @@
-package com.example.newsbackend.repository.history.analise;
+package com.example.newsbackend.repository.storage.analise;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class TextEntity {
+public class TextEntity extends AbstractTextEmotion {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

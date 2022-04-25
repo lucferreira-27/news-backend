@@ -1,11 +1,10 @@
-package com.example.newsbackend.repository.history;
-import com.example.newsbackend.repository.history.analise.ContentAnaliseResult;
-import com.example.newsbackend.repository.history.analise.TextEntity;
+package com.example.newsbackend.repository.storage;
+import com.example.newsbackend.repository.storage.analise.ContentAnaliseResult;
 import com.example.newsbackend.repository.sites.RegisteredSite;
 
 import javax.persistence.*;
 
-@TextEntity
+@Entity
 public class StorageResult {
     @Id
     @Column(name = "id", nullable = false)

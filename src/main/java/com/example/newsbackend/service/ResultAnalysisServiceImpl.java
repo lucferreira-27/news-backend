@@ -1,7 +1,7 @@
 package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.history.*;
-import com.example.newsbackend.repository.history.analise.WatsonAnaliseResult;
+import com.example.newsbackend.repository.storage.*;
+import com.example.newsbackend.repository.storage.analise.WatsonAnaliseResult;
 import com.example.newsbackend.repository.page.PageBody;
 import com.example.newsbackend.service.nlu.NLUException;
 import com.example.newsbackend.service.nlu.watson.WatsonNLUService;

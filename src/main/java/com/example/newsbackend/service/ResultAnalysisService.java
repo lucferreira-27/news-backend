@@ -1,6 +1,6 @@
 package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.history.StorageResult;
+import com.example.newsbackend.repository.storage.StorageResult;
 import com.example.newsbackend.service.serp.NewsResultPage;
 
 public interface ResultAnalysisService {

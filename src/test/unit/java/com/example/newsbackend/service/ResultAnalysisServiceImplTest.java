@@ -1,8 +1,8 @@
 package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.history.StorageResult;
-import com.example.newsbackend.repository.history.StorageResultRepository;
-import com.example.newsbackend.repository.history.StorageStatus;
+import com.example.newsbackend.repository.storage.StorageResult;
+import com.example.newsbackend.repository.storage.StorageResultRepository;
+import com.example.newsbackend.repository.storage.StorageStatus;
 import com.example.newsbackend.repository.page.PageBody;
 import com.example.newsbackend.repository.sites.RegisteredSite;
 import com.example.newsbackend.service.nlu.watson.WatsonNLUService;
