@@ -47,7 +47,7 @@ class StaticScrapingBotTest {
         final SelectorQuery selectorQuery = createScrapeQuery();
         final List<SelectorQuery> scrapeQueries = List.of(selectorQuery);
 
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
 
         StaticScrapingBot spyStaticScrapingBot = spy(staticScrapingBotUnderTest);
@@ -75,7 +75,7 @@ class StaticScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         final String exceptionMsg = "Error while getting page contents";
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
         StaticScrapingBot spyStaticScrapingBot = spy(staticScrapingBotUnderTest);
 
@@ -98,7 +98,7 @@ class StaticScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         final String testContentExtract = "contentExtract";
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When
@@ -119,7 +119,7 @@ class StaticScrapingBotTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When

@@ -1,6 +1,5 @@
 package com.example.newsbackend.service.scrape;
 
-import com.example.newsbackend.repository.page.PageContent;
 import com.example.newsbackend.repository.sites.SiteConfiguration;
 import com.example.newsbackend.service.scrape.stable.HtmlParser;
 import com.example.newsbackend.service.scrape.stable.ParseValues;
@@ -30,7 +29,7 @@ public abstract class ScrapingStrategy {
 
     protected List<ParseValues> parseContentExtract(String contentExtract, SiteConfiguration siteConfiguration) {
 
-        List<ParseValues> pageHeadlines = htmlParser.parse(contentExtract, siteConfiguration.getScrapeQueries());
+        List<ParseValues> pageHeadlines = htmlParser.parse(contentExtract, siteConfiguration.getSelectorQueries());
         return pageHeadlines;
     }
 }

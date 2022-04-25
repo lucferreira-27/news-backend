@@ -1,7 +1,6 @@
 package com.example.newsbackend.service;
 
 import com.example.newsbackend.repository.page.PageBody;
-import com.example.newsbackend.repository.page.PageHeadline;
 import com.example.newsbackend.repository.sites.RegisteredSite;
 import com.example.newsbackend.repository.sites.SelectorQuery;
 import com.example.newsbackend.repository.sites.SiteConfiguration;
@@ -49,13 +48,14 @@ class ScrapeNewsPageServiceImplTest {
         final NewsResultPage newsResultPage = new NewsResultPage();
         newsResultPage.setLink("https://test/test");
         newsResultPage.setTitle("testTitle");
+        final RegisteredSite registeredSite = createRegisteredSite();
         final PageBody expectPageBody = new PageBody(
                 newsResultPage,
-                "content");
+                "content",
+                registeredSite);
 
         final ParseValues parseValues = new ParseValues(Map.of("text","content"));
 
-        final RegisteredSite registeredSite = createRegisteredSite();
         final List<ParseValues> expectParseValues = List.of(parseValues);
 
         // When
@@ -67,7 +67,7 @@ class ScrapeNewsPageServiceImplTest {
 
         // Verify the results
         assertThat(result).isNotNull();
-        assertThat(result.getTextContent()).isEqualTo(expectPageBody.getTextContent());
+        assertThat(result.getTextContent().trim()).isEqualTo(expectPageBody.getTextContent());
 
 
         verify(mockPageValidator, times(1)).validatePage("https://test");
@@ -94,7 +94,7 @@ class ScrapeNewsPageServiceImplTest {
         selectorQuery.setId(0L);
         selectorQuery.setSelector("query");
 
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         registeredSite.setSiteConfiguration(siteConfiguration);
 
         return registeredSite;
@@ -105,7 +105,9 @@ class ScrapeNewsPageServiceImplTest {
 
         //Given
         final NewsResultPage newsResultPage = new NewsResultPage();
-        newsResultPage.setLink("testLink");
+        final String testLink = "https://test/test";
+        final String testLinkValidate = "https://test";
+        newsResultPage.setLink(testLink);
         newsResultPage.setTitle("testTitle");
         // When
         when(mockPageValidator.validatePage(any(String.class))).thenThrow(PageValidatorException.class);
@@ -115,7 +117,7 @@ class ScrapeNewsPageServiceImplTest {
                 .isInstanceOf(PageValidatorException.class);
 
         // Verify the results
-        verify(mockPageValidator, times(1)).validatePage(newsResultPage.getLink());
+        verify(mockPageValidator, times(1)).validatePage(testLinkValidate);
         verify(mockPageScrapeTool, never()).scrape(any(SiteConfiguration.class),any(String.class));
 
     }

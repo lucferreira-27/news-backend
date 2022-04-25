@@ -1,6 +1,5 @@
 package com.example.newsbackend.service.tools;
 
-import com.example.newsbackend.repository.page.PageContent;
 import com.example.newsbackend.repository.sites.SiteConfiguration;
 import com.example.newsbackend.service.scrape.ScrapingException;
 import com.example.newsbackend.service.scrape.ScrapingStrategy;
@@ -25,6 +24,9 @@ public class PageScrapeTool implements ScrapeTool {
         ScrapingStrategy scrapingStrategy = scrapingStrategies.get(siteConfiguration.getScrapingType().name());
         if (scrapingStrategy == null) {
             throw new NullPointerException("No scraping strategy found for " + siteConfiguration.getScrapingType().name());
+        }
+        if(siteConfiguration.getSelectorQueries() == null || siteConfiguration.getSelectorQueries().isEmpty()) {
+            throw new NullPointerException("No scrape queries found for " + siteConfiguration.getSiteDomain());
         }
 
         return scrapingStrategy.extractPageContents(url, siteConfiguration);

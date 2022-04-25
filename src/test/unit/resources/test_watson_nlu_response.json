@@ -1,0 +1,78 @@
+{
+  "language": "en",
+  "analyzedText": null,
+  "retrievedUrl": null,
+  "usage": {
+    "features": 4,
+    "textCharacters": 26,
+    "textUnits": 1
+  },
+  "concepts": [],
+  "entities": [
+    {
+      "type": "Location",
+      "text": "Rome",
+      "relevance": 0.978348,
+      "confidence": 0.927003,
+      "mentions": null,
+      "count": 1,
+      "emotion": {
+        "anger": 0.030493,
+        "disgust": 0.088497,
+        "fear": 0.108251,
+        "joy": 0.473558,
+        "sadness": 0.184372
+      },
+      "sentiment": {
+        "score": 0.0
+      },
+      "disambiguation": null
+    }
+  ],
+  "keywords": [
+    {
+      "count": 1,
+      "relevance": 0.957921,
+      "text": "Rome",
+      "emotion": {
+        "anger": 0.030493,
+        "disgust": 0.088497,
+        "fear": 0.108251,
+        "joy": 0.473558,
+        "sadness": 0.184372
+      },
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "count": 1,
+      "relevance": 0.765931,
+      "text": "day",
+      "emotion": {
+        "anger": 0.030493,
+        "disgust": 0.088497,
+        "fear": 0.108251,
+        "joy": 0.473558,
+        "sadness": 0.184372
+      },
+      "sentiment": {
+        "score": 0.0
+      }
+    }
+  ],
+  "categories": null,
+  "classifications": null,
+  "emotion": null,
+  "metadata": null,
+  "relations": null,
+  "semanticRoles": null,
+  "sentiment": {
+    "document": {
+      "label": "neutral",
+      "score": 0.0
+    },
+    "targets": null
+  },
+  "syntax": null
+}

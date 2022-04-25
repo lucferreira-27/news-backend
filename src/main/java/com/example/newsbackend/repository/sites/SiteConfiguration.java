@@ -1,6 +1,7 @@
 package com.example.newsbackend.repository.sites;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class SiteConfiguration {
     @Enumerated(EnumType.ORDINAL)
     private DefaultScrapingType scrapingType = DefaultScrapingType.STATIC;
     @OneToMany(cascade=CascadeType.ALL)
-    private List<SelectorQuery> scrapeQueries;
+    private List<SelectorQuery> selectorQueries = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -85,12 +86,12 @@ public class SiteConfiguration {
         this.siteName = siteName;
     }
 
-    public List<SelectorQuery> getScrapeQueries() {
-        return scrapeQueries;
+    public List<SelectorQuery> getSelectorQueries() {
+        return selectorQueries;
     }
 
-    public void setScrapeQueries(List<SelectorQuery> scrapeQueries) {
-        this.scrapeQueries = scrapeQueries;
+    public void setSelectorQueries(List<SelectorQuery> scrapeQueries) {
+        this.selectorQueries = scrapeQueries;
     }
 
     public DefaultScrapingType getScrapingType() {

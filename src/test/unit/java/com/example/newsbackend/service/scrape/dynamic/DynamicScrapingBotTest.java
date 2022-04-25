@@ -41,7 +41,7 @@ class DynamicScrapingBotTest {
         final SelectorQuery selectorQuery = createScrapeQuery();
         final List<SelectorQuery> scrapeQueries = List.of(selectorQuery);
 
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
 
         DynamicScrapingBot spyDynamicScrapingBot = spy(dynamicScrapingBotUnderTest);
@@ -68,7 +68,7 @@ class DynamicScrapingBotTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
         DynamicScrapingBot spyDynamicScrapingBot = spy(dynamicScrapingBotUnderTest);
 
@@ -91,7 +91,7 @@ class DynamicScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         final String testContentExtract = "contentExtract";
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When
@@ -115,7 +115,7 @@ class DynamicScrapingBotTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When
@@ -137,7 +137,7 @@ class DynamicScrapingBotTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When

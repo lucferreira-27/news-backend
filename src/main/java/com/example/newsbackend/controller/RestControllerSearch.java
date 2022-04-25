@@ -1,12 +1,13 @@
 package com.example.newsbackend.controller;
 
-import com.example.newsbackend.repository.page.PageBody;
-import com.example.newsbackend.service.PageValidatorException;
-import com.example.newsbackend.service.ScrapeNewsPageServiceImpl;
+import com.example.newsbackend.repository.history.StorageResult;
+import com.example.newsbackend.service.ResultAnalysisServiceImpl;
 import com.example.newsbackend.service.SearchNewsPageServiceImpl;
-import com.example.newsbackend.service.scrape.ScrapingException;
+import com.example.newsbackend.service.nlu.watson.WatsonAnalyze;
+import com.example.newsbackend.service.nlu.watson.WatsonAnalyzeOptions;
 import com.example.newsbackend.service.serp.NewsResultPage;
 import com.example.newsbackend.service.serp.ScaleAPIException;
+import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,32 +21,24 @@ import java.util.Map;
 public class RestControllerSearch {
 
     private final SearchNewsPageServiceImpl searchNewsPageService;
-    private final ScrapeNewsPageServiceImpl scrapePageService;
-
-    public RestControllerSearch(SearchNewsPageServiceImpl searchNewsPageService, ScrapeNewsPageServiceImpl scrapePageService) {
+    private final ResultAnalysisServiceImpl resultAnalysisService;
+    public RestControllerSearch(SearchNewsPageServiceImpl searchNewsPageService, ResultAnalysisServiceImpl resultAnalysisService) {
         this.searchNewsPageService = searchNewsPageService;
-        this.scrapePageService = scrapePageService;
+        this.resultAnalysisService = resultAnalysisService;
     }
 
     @GetMapping("/search")
     public ResponseEntity search(@RequestParam(required = true) String q, @RequestParam Map<String, String> allRequestParams) {
         List<NewsResultPage> newsResultPages = searchNewsPageService.search(allRequestParams);
-
         try {
-            List<PageBody> pageBodies = new ArrayList<>();
+            List<StorageResult> storageResults = new ArrayList<>();
             for (NewsResultPage newsResultPage : newsResultPages) {
-                try {
-                    PageBody pageBody = scrapePageService.scrapeNewsPages(newsResultPage);
-                    pageBodies.add(pageBody);
-                } catch (PageValidatorException e) {
-                    e.printStackTrace();
-                }
+                StorageResult storageResult = resultAnalysisService.analysis(newsResultPage);
+                storageResults.add(storageResult);
             }
-            return ResponseEntity.ok(pageBodies);
+            return ResponseEntity.ok(storageResults);
 
         } catch (ScaleAPIException e) {
-            e.printStackTrace();
-        } catch (ScrapingException e) {
             e.printStackTrace();
         }
 

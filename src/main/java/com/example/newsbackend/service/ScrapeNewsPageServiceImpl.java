@@ -25,16 +25,22 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
 
     @Override
     public PageBody scrapeNewsPages(NewsResultPage searchResult) throws PageValidatorException, ScrapingException {
+        String searchUrl = searchResult.getLink();
 
-        ParseValues parseValue = getParseValueByUrl(searchResult.getLink());
-        PageBody pageBody = new PageBody(searchResult, parseValue.getValues().get("text"));
+        RegisteredSite registeredSite = getRegisteredSiteByURL(searchUrl);
+
+        List<ParseValues> parseValues = getParseValueByUrl(registeredSite,searchUrl);
+        String txtValues = parseValues
+                .stream()
+                .map(parseValue -> parseValue.getValues().get("text"))
+                .reduce("", (a, b) -> a + " " + b);
+        PageBody pageBody = new PageBody(searchResult,txtValues,registeredSite);
         return pageBody;
     }
 
-    private ParseValues getParseValueByUrl(String url) throws PageValidatorException, ScrapingException {
-        RegisteredSite registeredSite = getRegisteredSiteByURL(url);
-        ParseValues parseValue = scrapeRegisteredSite(registeredSite, url);
-        return parseValue;
+    private List<ParseValues> getParseValueByUrl(RegisteredSite registeredSite, String url) throws PageValidatorException, ScrapingException {
+        List<ParseValues>  parseValues = scrapeRegisteredSite(registeredSite, url);
+        return parseValues;
     }
 
     private RegisteredSite getRegisteredSiteByURL(String url) throws PageValidatorException {
@@ -43,9 +49,9 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
         return registeredSite;
     }
 
-    private ParseValues scrapeRegisteredSite(RegisteredSite registeredSite, String url) throws ScrapingException {
+    private  List<ParseValues>  scrapeRegisteredSite(RegisteredSite registeredSite, String url) throws ScrapingException {
         List<ParseValues> pagesContents = pageScrapeTool.scrape(registeredSite.getSiteConfiguration(), url);
-        return pagesContents.get(0);
+        return pagesContents;
     }
 
 

@@ -1,9 +1,11 @@
 package com.example.newsbackend.repository.history;
+import com.example.newsbackend.repository.history.analise.ContentAnaliseResult;
+import com.example.newsbackend.repository.history.analise.TextEntity;
 import com.example.newsbackend.repository.sites.RegisteredSite;
 
 import javax.persistence.*;
 
-@Entity
+@TextEntity
 public class StorageResult {
     @Id
     @Column(name = "id", nullable = false)
@@ -11,18 +13,26 @@ public class StorageResult {
     @OneToOne
     private RegisteredSite registeredSite;
     private StorageStatus status;
+    private String statusMessage;
+    private long analysisTime;
     private Double finalScore;
     @OneToOne
     private ContentAnaliseResult contentAnaliseResult;
 
-    @ManyToOne
-    private ResultHistory resultHistory;
 
     public StorageStatus getStatus() {
         return status;
     }
     public void setStatus(StorageStatus status) {
         this.status = status;
+    }
+    public void setStatus(StorageStatus status, String message) {
+        this.status = status;
+        this.statusMessage = message;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
     }
 
     public Double getFinalScore() {
@@ -57,11 +67,11 @@ public class StorageResult {
         this.registeredSite = registeredSite;
     }
 
-    public ResultHistory getResultHistory() {
-        return resultHistory;
+    public void setAnalysisTime(long analysisTime) {
+        this.analysisTime = analysisTime;
     }
 
-    public void setResultHistory(ResultHistory resultHistory) {
-        this.resultHistory = resultHistory;
+    public long getAnalysisTime() {
+        return analysisTime;
     }
 }

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ class PageScrapeToolTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // Then
@@ -73,7 +74,7 @@ class PageScrapeToolTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
 
         // Then
@@ -93,7 +94,7 @@ class PageScrapeToolTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         final List<ParseValues> expectResult = List.of(new ParseValues());
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
         // When
         when(mockStaticScrapingBot.extractPageContents(any(String.class), any(SiteConfiguration.class))).thenReturn(expectResult);
@@ -115,7 +116,7 @@ class PageScrapeToolTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
         // When
@@ -123,9 +124,23 @@ class PageScrapeToolTest {
 
         // Verify
         assertThrows(NullPointerException.class, () -> pageScrapeToolUnderTest.scrape(siteConfiguration, testUrl));
+        verify(mockStaticScrapingBot, never()).extractPageContents(any(String.class), any(SiteConfiguration.class));
 
     }
+    @Test
+    void if_SelectorQueryList_is_Empty_Should_Throw_NullPointException() throws Exception {
+        // Given
+        final String testUrl = "url";
+        final SiteConfiguration siteConfiguration = createSiteConfiguration();
+        siteConfiguration.setSelectorQueries(Collections.emptyList());
+        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
 
+
+        // Verify
+        assertThrows(NullPointerException.class, () -> pageScrapeToolUnderTest.scrape(siteConfiguration, testUrl));
+
+        verify(mockStaticScrapingBot, never()).extractPageContents(any(String.class), any(SiteConfiguration.class));
+    }
 
     @Test
     void when_Scrape_Should_Throw_ScrapingException() throws ScrapingException {
@@ -133,7 +148,7 @@ class PageScrapeToolTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
-        siteConfiguration.setScrapeQueries(List.of(selectorQuery));
+        siteConfiguration.setSelectorQueries(List.of(selectorQuery));
         siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
         final ScrapingException scrapingException = new ScrapingException("test");
 
