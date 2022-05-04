@@ -55,7 +55,7 @@ class PageScrapeToolTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // Then
         pageScrapeToolUnderTest.scrape(siteConfiguration, testUrl);
@@ -75,7 +75,7 @@ class PageScrapeToolTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.DYNAMIC);
 
         // Then
         pageScrapeToolUnderTest.scrape(siteConfiguration, testUrl);
@@ -95,7 +95,7 @@ class PageScrapeToolTest {
         final SelectorQuery selectorQuery = createScrapeQuery();
         final List<ParseValues> expectResult = List.of(new ParseValues());
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
         // When
         when(mockStaticScrapingBot.extractPageContents(any(String.class), any(SiteConfiguration.class))).thenReturn(expectResult);
 
@@ -117,7 +117,7 @@ class PageScrapeToolTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
         doReturn(null).when(mockScrapingStrategies).get(siteConfiguration.getScrapingType().name());
@@ -133,7 +133,7 @@ class PageScrapeToolTest {
         final String testUrl = "url";
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         siteConfiguration.setSelectorQueries(Collections.emptyList());
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
 
         // Verify
@@ -149,7 +149,7 @@ class PageScrapeToolTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
         final ScrapingException scrapingException = new ScrapingException("test");
 
         // When
@@ -163,13 +163,13 @@ class PageScrapeToolTest {
     private SiteConfiguration createSiteConfiguration() {
         SiteConfiguration siteConfiguration = new SiteConfiguration();
         siteConfiguration.setId(0L);
-        siteConfiguration.setSiteCountry("siteCountry");
-        siteConfiguration.setSiteDescription("siteDescription");
-        siteConfiguration.setSiteDomain("siteDomain");
-        siteConfiguration.setSiteLanguage("siteLanguage");
-        siteConfiguration.setSiteLogo("siteLogo");
-        siteConfiguration.setSiteKeywords("siteKeywords");
-        siteConfiguration.setSiteName("siteName");
+        siteConfiguration.setCountry("siteCountry");
+        siteConfiguration.setDescription("siteDescription");
+        siteConfiguration.setDomain("siteDomain");
+        siteConfiguration.setLanguage("siteLanguage");
+        siteConfiguration.setLogo("siteLogo");
+        siteConfiguration.setKeywords(List.of("siteKeywords"));
+        siteConfiguration.setName("siteName");
         return siteConfiguration;
     }
 

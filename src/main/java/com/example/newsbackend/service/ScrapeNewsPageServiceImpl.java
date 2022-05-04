@@ -14,20 +14,16 @@ import java.util.List;
 
 @Service
 public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
-    private final PageValidator pageValidator;
     private final PageScrapeTool pageScrapeTool;
 
-    public ScrapeNewsPageServiceImpl(PageValidator pageValidator, PageScrapeTool pageScrapeTool) {
-        this.pageValidator = pageValidator;
+    public ScrapeNewsPageServiceImpl(PageScrapeTool pageScrapeTool) {
         this.pageScrapeTool = pageScrapeTool;
     }
 
 
     @Override
-    public PageBody scrapeNewsPages(NewsResultPage searchResult) throws PageValidatorException, ScrapingException {
+    public PageBody scrapeNewsPages(NewsResultPage searchResult,RegisteredSite registeredSite) throws PageValidatorException, ScrapingException {
         String searchUrl = searchResult.getLink();
-
-        RegisteredSite registeredSite = getRegisteredSiteByURL(searchUrl);
 
         List<ParseValues> parseValues = getParseValueByUrl(registeredSite,searchUrl);
         String txtValues = parseValues
@@ -41,12 +37,6 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
     private List<ParseValues> getParseValueByUrl(RegisteredSite registeredSite, String url) throws PageValidatorException, ScrapingException {
         List<ParseValues>  parseValues = scrapeRegisteredSite(registeredSite, url);
         return parseValues;
-    }
-
-    private RegisteredSite getRegisteredSiteByURL(String url) throws PageValidatorException {
-        String testUrl = url.substring(0, url.indexOf("/", 8));
-        RegisteredSite registeredSite = pageValidator.validatePage(testUrl);
-        return registeredSite;
     }
 
     private  List<ParseValues>  scrapeRegisteredSite(RegisteredSite registeredSite, String url) throws ScrapingException {

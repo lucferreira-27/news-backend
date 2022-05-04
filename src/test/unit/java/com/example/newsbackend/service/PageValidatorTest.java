@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,16 +32,18 @@ class PageValidatorTest {
     void when_Validate_Page_Should_Return_RegisteredSite() throws PageValidatorException {
         // Given
         final RegisteredSite expectResult = new RegisteredSite();
-        final String testUrlValidate = "https://www.google.com";
+        final String testUrl = "https://www.google.com/?query=test";
+        final String validateTestUrl = "https://www.google.com";
+
         // When
-        when(mockRegisteredSiteRepository.findByUrlContaining(testUrlValidate)).thenReturn(List.of(expectResult));
+        when(mockRegisteredSiteRepository.findByUrlContaining(validateTestUrl)).thenReturn(List.of(expectResult));
 
         // Then
-        final RegisteredSite result = pageValidatorUnderTest.validatePage(testUrlValidate);
+        final RegisteredSite result = pageValidatorUnderTest.validatePage(testUrl);
 
         // Verify
         assertThat(result).isEqualTo(expectResult);
-        verify(mockRegisteredSiteRepository, times(1)).findByUrlContaining(testUrlValidate);
+        verify(mockRegisteredSiteRepository, times(1)).findByUrlContaining(validateTestUrl);
 
     }
 
@@ -49,17 +52,18 @@ class PageValidatorTest {
     void if_RegisteredSite_Is_Not_Found_Should_Throw_PageValidatorException() {
 
         // Given
-        final String testUrl = "https://www.google.com";
+        final String testUrl = "https://www.google.com/?query=test";
+        final String validateTestUrl = "https://www.google.com";
 
         // When
-        when(mockRegisteredSiteRepository.findByUrl(testUrl)).thenReturn(Collections.emptyList());
+        when(mockRegisteredSiteRepository.findByUrl(testUrl)).thenReturn(Optional.empty());
 
         // Then
         assertThatThrownBy(() -> pageValidatorUnderTest.validatePage(testUrl))
                 .isInstanceOf(PageValidatorException.class)
                 .hasMessage("No registered site found for url: " + testUrl);
         //Verify
-        verify(mockRegisteredSiteRepository, times(1)).findByUrlContaining(testUrl);
+        verify(mockRegisteredSiteRepository, times(1)).findByUrlContaining(validateTestUrl);
         verifyNoMoreInteractions(mockRegisteredSiteRepository);
 
 

@@ -17,7 +17,8 @@ public class PageValidator {
     }
 
     public RegisteredSite validatePage(String url) throws PageValidatorException {
-        RegisteredSite registeredSite = getRegisteredSiteByURL(url)
+        String urlDomain = url.substring(0, url.indexOf("/", 8));
+        RegisteredSite registeredSite = getRegisteredSiteByURL(urlDomain)
                 .orElseThrow(() -> new PageValidatorException("No registered site found for url: " + url));
 
         return registeredSite;

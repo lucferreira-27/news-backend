@@ -1,12 +1,15 @@
 package com.example.newsbackend.repository.storage.analise;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public abstract class ContentAnaliseResult  {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -17,4 +20,18 @@ public abstract class ContentAnaliseResult  {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String toJsonString() throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(this);
+
+    }
+    public abstract List<TextConcept> getConcepts();
+
+    public abstract List<TextEntity> getEntities();
+
+    public abstract  List<TextKeyword> getKeywords();
+
+    public abstract TextGlobalSentiment getSentiment();
+
+    public abstract String getLanguage();
 }

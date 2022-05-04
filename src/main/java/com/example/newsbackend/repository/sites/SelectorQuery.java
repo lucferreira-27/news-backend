@@ -1,6 +1,9 @@
 package com.example.newsbackend.repository.sites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class SelectorQuery {
@@ -9,9 +12,11 @@ public class SelectorQuery {
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne
+    @JsonIgnore
     private SiteConfiguration siteConfiguration;
-
+    @NotBlank(message = "selector is required")
     private String selector;
+    @NotBlank(message = "attribute is required")
     private String attribute;
 
     public SelectorQuery() {

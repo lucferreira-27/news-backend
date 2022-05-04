@@ -1,24 +1,28 @@
 package com.example.newsbackend.repository.storage;
 import com.example.newsbackend.repository.storage.analise.ContentAnaliseResult;
 import com.example.newsbackend.repository.sites.RegisteredSite;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
 @Entity
 public class StorageResult {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private RegisteredSite registeredSite;
     private StorageStatus status;
     private String statusMessage;
     private long analysisTime;
-    private Double finalScore;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private ContentAnaliseResult contentAnaliseResult;
-
-
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    private SearchHistory searchHistory;
+    @Embedded
+    private SearchInfoResult searchInfo;
     public StorageStatus getStatus() {
         return status;
     }
@@ -32,14 +36,6 @@ public class StorageResult {
 
     public String getStatusMessage() {
         return statusMessage;
-    }
-
-    public Double getFinalScore() {
-        return finalScore;
-    }
-
-    public void setFinalScore(Double finalScore) {
-        this.finalScore = finalScore;
     }
 
     public ContentAnaliseResult getContentAnaliseResult() {
@@ -58,11 +54,11 @@ public class StorageResult {
         this.id = id;
     }
 
-    public RegisteredSite getTargetSite() {
+    public RegisteredSite getRegisteredSite() {
         return registeredSite;
     }
 
-    public void setTargetSite(RegisteredSite registeredSite) {
+    public void setRegisteredSite(RegisteredSite registeredSite) {
         this.registeredSite = registeredSite;
     }
 
@@ -72,5 +68,21 @@ public class StorageResult {
 
     public long getAnalysisTime() {
         return analysisTime;
+    }
+
+    public SearchInfoResult getSearchInfo() {
+        return searchInfo;
+    }
+
+    public void setSearchInfo(SearchInfoResult searchInfo) {
+        this.searchInfo = searchInfo;
+    }
+
+    public SearchHistory getSearchHistory() {
+        return searchHistory;
+    }
+
+    public void setSearchHistory(SearchHistory searchHistory) {
+        this.searchHistory = searchHistory;
     }
 }

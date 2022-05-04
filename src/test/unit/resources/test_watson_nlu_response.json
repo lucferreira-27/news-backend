@@ -1,78 +1,89 @@
 {
-  "language": "en",
-  "analyzedText": null,
-  "retrievedUrl": null,
+  "language": "pt",
   "usage": {
     "features": 4,
-    "textCharacters": 26,
-    "textUnits": 1
+    "text_characters": 6063,
+    "text_units": 1
   },
-  "concepts": [],
+  "concepts": [
+    {
+      "text": "Supremo Tribunal Federal",
+      "relevance": 0.991806,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Supremo_Tribunal_Federal"
+    },
+    {
+      "text": "Tribunal Superior Eleitoral",
+      "relevance": 0.990723,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Tribunal_Superior_Eleitoral"
+    },
+    {
+      "text": "Ministro",
+      "relevance": 0.982224,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Ministro"
+    }
+  ],
   "entities": [
     {
-      "type": "Location",
-      "text": "Rome",
-      "relevance": 0.978348,
-      "confidence": 0.927003,
-      "mentions": null,
-      "count": 1,
-      "emotion": {
-        "anger": 0.030493,
-        "disgust": 0.088497,
-        "fear": 0.108251,
-        "joy": 0.473558,
-        "sadness": 0.184372
-      },
+      "type": "Organization",
+      "text": "TSE",
+      "relevance": 0.95276,
+      "confidence": 1.0,
+      "count": 12,
       "sentiment": {
         "score": 0.0
-      },
-      "disambiguation": null
+      }
+    },
+    {
+      "type": "JobTitle",
+      "text": "ministro",
+      "relevance": 0.84908,
+      "confidence": 1.0,
+      "count": 13,
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "type": "Organization",
+      "text": "Supremo",
+      "relevance": 0.791704,
+      "confidence": 1.0,
+      "count": 10,
+      "sentiment": {
+        "score": 0.0
+      }
     }
   ],
   "keywords": [
     {
       "count": 1,
-      "relevance": 0.957921,
-      "text": "Rome",
-      "emotion": {
-        "anger": 0.030493,
-        "disgust": 0.088497,
-        "fear": 0.108251,
-        "joy": 0.473558,
-        "sadness": 0.184372
-      },
+      "relevance": 0.72493,
+      "text": "Ministros do TSE",
       "sentiment": {
         "score": 0.0
       }
     },
     {
       "count": 1,
-      "relevance": 0.765931,
-      "text": "day",
-      "emotion": {
-        "anger": 0.030493,
-        "disgust": 0.088497,
-        "fear": 0.108251,
-        "joy": 0.473558,
-        "sadness": 0.184372
-      },
+      "relevance": 0.650087,
+      "text": "presidente Jair Bolsonaro",
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "count": 1,
+      "relevance": 0.582428,
+      "text": "Tribunal Superior Eleitoral",
       "sentiment": {
         "score": 0.0
       }
     }
   ],
-  "categories": null,
-  "classifications": null,
-  "emotion": null,
-  "metadata": null,
-  "relations": null,
-  "semanticRoles": null,
   "sentiment": {
     "document": {
-      "label": "neutral",
-      "score": 0.0
-    },
-    "targets": null
-  },
-  "syntax": null
+      "label": "negative",
+      "score": -0.726577
+    }
+  }
 }

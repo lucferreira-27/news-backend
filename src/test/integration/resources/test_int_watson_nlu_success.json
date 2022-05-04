@@ -1,0 +1,89 @@
+{
+  "language": "pt",
+  "usage": {
+    "features": 4,
+    "text_characters": 2678,
+    "text_units": 1
+  },
+  "concepts": [
+    {
+      "text": "Imposto",
+      "relevance": 0.994197,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Imposto"
+    },
+    {
+      "text": "Imposto de renda",
+      "relevance": 0.993469,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Imposto_de_renda"
+    },
+    {
+      "text": "Polícia Rodoviária Federal",
+      "relevance": 0.970936,
+      "dbpedia_resource": "http://pt.dbpedia.org/resource/Polícia_Rodoviária_Federal"
+    }
+  ],
+  "entities": [
+    {
+      "type": "Person",
+      "text": "Bolsonaro",
+      "relevance": 0.952258,
+      "confidence": 1.0,
+      "count": 4,
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "type": "Organization",
+      "text": "governo",
+      "relevance": 0.935394,
+      "confidence": 0.999999,
+      "count": 5,
+      "sentiment": {
+        "score": 0.648793
+      }
+    },
+    {
+      "type": "Person",
+      "text": "Jair Bolsonaro",
+      "relevance": 0.715595,
+      "confidence": 0.978273,
+      "count": 1,
+      "sentiment": {
+        "score": 0.0
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "count": 1,
+      "relevance": 0.702258,
+      "text": "presidente Jair Bolsonaro",
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "count": 1,
+      "relevance": 0.692327,
+      "text": "série de medidas do governo",
+      "sentiment": {
+        "score": 0.0
+      }
+    },
+    {
+      "count": 1,
+      "relevance": 0.598355,
+      "text": "saque extra",
+      "sentiment": {
+        "score": 0.0
+      }
+    }
+  ],
+  "sentiment": {
+    "document": {
+      "label": "negative",
+      "score": -0.373511
+    }
+  }
+}

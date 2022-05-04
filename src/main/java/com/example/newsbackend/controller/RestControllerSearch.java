@@ -1,45 +1,57 @@
 package com.example.newsbackend.controller;
 
-import com.example.newsbackend.repository.storage.StorageResult;
-import com.example.newsbackend.service.ResultAnalysisServiceImpl;
-import com.example.newsbackend.service.SearchNewsPageServiceImpl;
-import com.example.newsbackend.service.serp.NewsResultPage;
-import com.example.newsbackend.service.serp.ScaleAPIException;
+import com.example.newsbackend.repository.storage.SearchHistory;
+import com.example.newsbackend.service.SearchHistoryServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class RestControllerSearch {
 
-    private final SearchNewsPageServiceImpl searchNewsPageService;
-    private final ResultAnalysisServiceImpl resultAnalysisService;
-    public RestControllerSearch(SearchNewsPageServiceImpl searchNewsPageService, ResultAnalysisServiceImpl resultAnalysisService) {
-        this.searchNewsPageService = searchNewsPageService;
-        this.resultAnalysisService = resultAnalysisService;
+    private final SearchHistoryServiceImpl searchHistoryPageService;
+
+    public RestControllerSearch(SearchHistoryServiceImpl searchHistoryPageService) {
+        this.searchHistoryPageService = searchHistoryPageService;
     }
 
     @GetMapping("/search")
-    public ResponseEntity search(@RequestParam(required = true) String q, @RequestParam Map<String, String> allRequestParams) {
-        List<NewsResultPage> newsResultPages = searchNewsPageService.search(allRequestParams);
-        try {
-            List<StorageResult> storageResults = new ArrayList<>();
-            for (NewsResultPage newsResultPage : newsResultPages) {
-                StorageResult storageResult = resultAnalysisService.analysis(newsResultPage);
-                storageResults.add(storageResult);
-            }
-            return ResponseEntity.ok(storageResults);
+    public ResponseEntity<SearchHistory> search(@RequestParam String q, @RequestParam Map<String, String> allRequestParams) {
 
-        } catch (ScaleAPIException e) {
-            e.printStackTrace();
-        }
+        SearchHistory searchHistory = searchHistoryPageService.search(q, allRequestParams);
+        return ResponseEntity.ok(searchHistory);
 
-        return ResponseEntity.internalServerError().build();
+
+    }
+
+    @GetMapping("/search/history/find/{id}")
+    public ResponseEntity<SearchHistory> findSearchHistory(@PathVariable Long id) {
+        SearchHistory searchHistory = searchHistoryPageService.findById(id);
+        return ResponseEntity.ok(searchHistory);
+
+    }
+
+    @DeleteMapping("/search/history/delete/{id}")
+    public ResponseEntity<SearchHistory> deleteSearchHistory(@PathVariable Long id) {
+        searchHistoryPageService.deleteById(id);
+        return ResponseEntity.accepted().build();
+
+    }
+
+    @GetMapping("/search/history/find/all")
+    public ResponseEntity<List<SearchHistory>> findAllSearchHistory() {
+        List<SearchHistory> searchHistoryList = searchHistoryPageService.findAll();
+        return ResponseEntity.ok(searchHistoryList);
+
+    }
+
+    @DeleteMapping("/search/history/delete/all")
+    public ResponseEntity<SearchHistory> deleteAllSearchHistory() {
+        searchHistoryPageService.deleteAll();
+        return ResponseEntity.accepted().build();
+
     }
 
 

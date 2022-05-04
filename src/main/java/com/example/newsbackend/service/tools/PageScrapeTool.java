@@ -26,7 +26,7 @@ public class PageScrapeTool implements ScrapeTool {
             throw new NullPointerException("No scraping strategy found for " + siteConfiguration.getScrapingType().name());
         }
         if(siteConfiguration.getSelectorQueries() == null || siteConfiguration.getSelectorQueries().isEmpty()) {
-            throw new NullPointerException("No scrape queries found for " + siteConfiguration.getSiteDomain());
+            throw new NullPointerException("No scrape queries found for " + siteConfiguration.getDomain());
         }
 
         return scrapingStrategy.extractPageContents(url, siteConfiguration);

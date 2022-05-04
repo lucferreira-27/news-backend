@@ -2,10 +2,14 @@ package com.example.newsbackend.repository.sites;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface RegisteredSiteRepository extends CrudRepository<RegisteredSite, Long> {
-    Iterable<RegisteredSite> findByUrl(String url);
-    Iterable<RegisteredSite> findByUrlContaining(String url);
+import java.util.List;
+import java.util.Optional;
 
+public interface RegisteredSiteRepository extends CrudRepository<RegisteredSite, Long> {
+    Optional<RegisteredSite> findByUrl(String url);
+    Iterable<RegisteredSite> findByUrlContaining(String url);
+    List<RegisteredSite> findAll();
+    boolean existsByUrl(String url);
 
 
 }

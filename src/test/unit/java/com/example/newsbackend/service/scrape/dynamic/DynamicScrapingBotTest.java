@@ -42,7 +42,7 @@ class DynamicScrapingBotTest {
         final List<SelectorQuery> scrapeQueries = List.of(selectorQuery);
 
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.DYNAMIC);
 
         DynamicScrapingBot spyDynamicScrapingBot = spy(dynamicScrapingBotUnderTest);
 
@@ -69,7 +69,7 @@ class DynamicScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.DYNAMIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.DYNAMIC);
         DynamicScrapingBot spyDynamicScrapingBot = spy(dynamicScrapingBotUnderTest);
 
         // When
@@ -92,7 +92,7 @@ class DynamicScrapingBotTest {
         final SelectorQuery selectorQuery = createScrapeQuery();
         final String testContentExtract = "contentExtract";
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
         doNothing().when(mockEmuBrowser).navigate(testUrl);
@@ -116,7 +116,7 @@ class DynamicScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
         doThrow(EmuBrowserException.class).when(mockEmuBrowser).retrieveContent();
@@ -138,7 +138,7 @@ class DynamicScrapingBotTest {
         final SiteConfiguration siteConfiguration = createSiteConfiguration();
         final SelectorQuery selectorQuery = createScrapeQuery();
         siteConfiguration.setSelectorQueries(List.of(selectorQuery));
-        siteConfiguration.setScrapingType(SiteConfiguration.DefaultScrapingType.STATIC);
+        siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
         doThrow(EmuBrowserException.class).when(mockEmuBrowser).navigate(testUrl);
@@ -157,13 +157,13 @@ class DynamicScrapingBotTest {
     private SiteConfiguration createSiteConfiguration() {
         SiteConfiguration siteConfiguration = new SiteConfiguration();
         siteConfiguration.setId(0L);
-        siteConfiguration.setSiteCountry("siteCountry");
-        siteConfiguration.setSiteDescription("siteDescription");
-        siteConfiguration.setSiteDomain("siteDomain");
-        siteConfiguration.setSiteLanguage("siteLanguage");
-        siteConfiguration.setSiteLogo("siteLogo");
-        siteConfiguration.setSiteKeywords("siteKeywords");
-        siteConfiguration.setSiteName("siteName");
+        siteConfiguration.setCountry("siteCountry");
+        siteConfiguration.setDescription("siteDescription");
+        siteConfiguration.setDomain("siteDomain");
+        siteConfiguration.setLanguage("siteLanguage");
+        siteConfiguration.setLogo("siteLogo");
+        siteConfiguration.setKeywords(List.of("siteKeywords"));
+        siteConfiguration.setName("siteName");
         return siteConfiguration;
     }
 

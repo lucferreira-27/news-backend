@@ -2,20 +2,22 @@ package com.example.newsbackend.repository.sites;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class SiteConfiguration {
-    private String siteName;
-    private String siteDomain;
-    private String siteDescription;
-    private String siteLogo;
-    private String siteKeywords;
-    private String siteLanguage;
-    private String siteCountry;
+    private String name;
+    private String domain;
+    private String description;
+    private String logo;
+    private String keywords;
+    private String language;
+    private String country;
     @Enumerated(EnumType.ORDINAL)
-    private DefaultScrapingType scrapingType = DefaultScrapingType.STATIC;
-    @OneToMany(cascade=CascadeType.ALL)
+    private ScrapingType scrapingType = ScrapingType.STATIC;
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     private List<SelectorQuery> selectorQueries = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,60 +32,60 @@ public class SiteConfiguration {
         this.id = id;
     }
 
-    public String getSiteCountry() {
-        return siteCountry;
+    public String getCountry() {
+        return country;
     }
 
-    public void setSiteCountry(String siteCountry) {
-        this.siteCountry = siteCountry;
+    public void setCountry(String siteCountry) {
+        this.country = siteCountry;
     }
 
-    public String getSiteDescription() {
-        return siteDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSiteDescription(String siteDescription) {
-        this.siteDescription = siteDescription;
+    public void setDescription(String siteDescription) {
+        this.description = siteDescription;
     }
 
-    public String getSiteDomain() {
-        return siteDomain;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setSiteDomain(String siteDomain) {
-        this.siteDomain = siteDomain;
+    public void setDomain(String siteDomain) {
+        this.domain = siteDomain;
     }
 
-    public String getSiteLanguage() {
-        return siteLanguage;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setSiteLanguage(String siteLanguage) {
-        this.siteLanguage = siteLanguage;
+    public void setLanguage(String siteLanguage) {
+        this.language = siteLanguage;
     }
 
-    public String getSiteLogo() {
-        return siteLogo;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setSiteLogo(String siteLogo) {
-        this.siteLogo = siteLogo;
+    public void setLogo(String siteLogo) {
+        this.logo = siteLogo;
     }
 
-    public String getSiteKeywords() {
-        return siteKeywords;
+    public List<String> getKeywords() {
+        return Arrays.asList(keywords.split(", "));
     }
 
-    public void setSiteKeywords(String siteKeywords) {
-        this.siteKeywords = siteKeywords;
+    public void setKeywords(List<String> siteKeywords) {
+        this.keywords = siteKeywords.stream().collect(Collectors.joining(", "));
     }
 
-    public String getSiteName() {
-        return siteName;
+    public String getName() {
+        return name;
     }
 
-    public void setSiteName(String siteName) {
-        this.siteName = siteName;
+    public void setName(String siteName) {
+        this.name = siteName;
     }
 
     public List<SelectorQuery> getSelectorQueries() {
@@ -94,15 +96,15 @@ public class SiteConfiguration {
         this.selectorQueries = scrapeQueries;
     }
 
-    public DefaultScrapingType getScrapingType() {
+    public ScrapingType getScrapingType() {
         return scrapingType;
     }
 
-    public void setScrapingType(DefaultScrapingType scrapingType) {
+    public void setScrapingType(ScrapingType scrapingType) {
         this.scrapingType = scrapingType;
     }
 
-    public enum DefaultScrapingType {
+    public enum ScrapingType {
         DYNAMIC, STATIC
     }
 }

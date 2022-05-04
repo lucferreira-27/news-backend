@@ -11,6 +11,8 @@ public class URLCustom {
         StringBuilder url = new StringBuilder(baseUrl);
         url.append("?");
         url.append(requestParameters.getParameters());
-        return new URL(url.toString());
+        String appendUrl = url.toString().replace(" ", "+");
+
+        return new URL(appendUrl);
     }
 }

@@ -1,13 +1,16 @@
 package com.example.newsbackend.repository.storage.analise;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TextConcept extends AbstractTextEmotion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -19,6 +22,7 @@ public class TextConcept extends AbstractTextEmotion {
         this.id = id;
     }
     @ManyToOne
+    @JsonIgnore
     private WatsonAnaliseResult watsonAnaliseResult;
     private String text;
     private double relevance;

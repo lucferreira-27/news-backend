@@ -1,6 +1,10 @@
 package com.example.newsbackend.service.serp;
 
-public class ScaleAPIException extends RuntimeException {
+import com.example.newsbackend.service.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+public class ScaleAPIException extends BadRequestException {
     public ScaleAPIException(String message) {
         super(message);
     }

@@ -35,7 +35,7 @@ public class SearchNewsPageServiceImpl implements SearchNewsPageService {
         RequestParameters requestParameters = buildRequestParameters(params);
         APIResponse response = scaleAPIRequest.getResponse(requestParameters);
         if(response.getNewsResultPages().size() == 0){
-            throw new ScaleAPIException("No results found for query \"" + requestParameters.getQuery() + "\"");
+            throw new NoneSearchResultException("No results found for query \"" + requestParameters.getQuery() + "\"");
         };
         return response.getNewsResultPages();
     }
@@ -52,12 +52,12 @@ public class SearchNewsPageServiceImpl implements SearchNewsPageService {
                 .build();
     }
     public enum SearchParameters{
-        QUERY("q"), // Search query
-        LANGUAGE("lang"), // Search results language
-        SORT_BY("sortBy"), // Sort search by
-        PAGE("page"), // Total pages
-        COUNTRY("country"), // Search in country
-        LOCATION("location"); // Search location
+        QUERY("q"), // Search query (required) Ex: q="trump"
+        LANGUAGE("lang"), // Search results language (optional) (default: English) Ex: lang=en
+        SORT_BY("sortBy"), // Sort search by [relevance, date] (optional) (default: relevance) Ex: sortBy=date
+        PAGE("page"), // Total pages to retrieve (optional) (default: 1) Ex: page=2
+        COUNTRY("country"), // Search in country (optional)  (default: US) Ex: country=US
+        LOCATION("location"); // Search location (optional) (default: None) Ex: location=New+York,New+York,United+States
 
         private String value;
 
