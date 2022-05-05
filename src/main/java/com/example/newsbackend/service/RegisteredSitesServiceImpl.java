@@ -1,8 +1,12 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
 import com.example.newsbackend.repository.sites.RegisteredSite;
-import com.example.newsbackend.repository.sites.RegisteredSiteForm;
+import com.example.newsbackend.repository.sites.RegisteredSiteDto;
 import com.example.newsbackend.repository.sites.RegisteredSiteRepository;
+import com.example.newsbackend.service.RegisteredSitesService;
+import com.example.newsbackend.exception.ResourceAlreadyExistsException;
+import com.example.newsbackend.exception.ResourceNotFoundException;
+import com.example.newsbackend.util.RegisteredSiteDtoMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -11,20 +15,30 @@ import java.util.Optional;
 public class RegisteredSitesServiceImpl implements RegisteredSitesService {
 
     private final RegisteredSiteRepository registeredSiteRepository;
-
-    public RegisteredSitesServiceImpl(RegisteredSiteRepository registeredSiteRepository) {
+    private final RegisteredSiteDtoMapper registeredSiteDtoMapper;
+    public RegisteredSitesServiceImpl(RegisteredSiteRepository registeredSiteRepository,
+                                      RegisteredSiteDtoMapper  registeredSiteDtoMapper) {
         this.registeredSiteRepository = registeredSiteRepository;
+        this.registeredSiteDtoMapper = registeredSiteDtoMapper;
     }
 
 
     @Override
-    public RegisteredSite save(RegisteredSiteForm siteForm) {
-        RegisteredSite site = RegisteredSite.fromRegisteredSiteForm(siteForm);
-        return save(site);
+    public RegisteredSite saveSite(RegisteredSiteDto siteDto) {
+        RegisteredSite site = RegisteredSite.fromRegisteredSiteDto(siteDto);
+        return saveSite(site);
     }
 
     @Override
-    public RegisteredSite save(RegisteredSite site) {
+    public RegisteredSite updateSite(Long id,RegisteredSiteDto site) {
+        RegisteredSite registeredSite = findSiteById(id);
+        RegisteredSite updatedSite = registeredSiteDtoMapper.updateWithNullAsNoChange(site,registeredSite);
+        return saveSite(updatedSite);
+    }
+
+
+    @Override
+    public RegisteredSite saveSite(RegisteredSite site) {
         if(registeredSiteRepository.existsByUrl(site.getUrl())) {
             throw new ResourceAlreadyExistsException("Site with url \"" + site.getUrl() + "\" already exists");
         }
@@ -32,21 +46,21 @@ public class RegisteredSitesServiceImpl implements RegisteredSitesService {
     }
 
     @Override
-    public RegisteredSite findById(Long id) {
+    public RegisteredSite findSiteById(Long id) {
         Optional<RegisteredSite> optional = registeredSiteRepository.findById(id);
         RegisteredSite site = optional.orElseThrow(() -> new ResourceNotFoundException("Site with ID \""+id+"\" not found"));
         return site;
     }
 
     @Override
-    public RegisteredSite findByUrl(String url) {
+    public RegisteredSite findSiteByUrl(String url) {
         Optional<RegisteredSite> optional = registeredSiteRepository.findByUrl(url);
         RegisteredSite site = optional.orElseThrow(() -> new ResourceNotFoundException("Site with URL \""+url+"\" not found"));
         return site;
     }
 
     @Override
-    public List<RegisteredSite> findAll() {
+    public List<RegisteredSite> findAllSites() {
         List<RegisteredSite> registeredSites = registeredSiteRepository.findAll();
         if(registeredSites.isEmpty()) {
             throw new ResourceNotFoundException("No registered sites found");
@@ -55,20 +69,20 @@ public class RegisteredSitesServiceImpl implements RegisteredSitesService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        if(!existsById(id)) {
+    public void deleteSiteById(Long id) {
+        if(!siteExistsById(id)) {
             throw new ResourceNotFoundException("Registered site with id \"" + id +"\" not found");
         }
         registeredSiteRepository.deleteById(id);
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteAllSites() {
         registeredSiteRepository.deleteAll();
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean siteExistsById(Long id) {
         return registeredSiteRepository.existsById(id);
     }
 }

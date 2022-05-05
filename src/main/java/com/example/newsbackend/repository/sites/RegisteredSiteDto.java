@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisteredSiteForm {
+public class RegisteredSiteDto {
 
     @NotBlank(message = "name is required")
     private String name;
@@ -63,64 +63,64 @@ public class RegisteredSiteForm {
     }
 
     public static class Builder{
-        private RegisteredSiteForm registeredSiteForm;
+        private RegisteredSiteDto registeredSiteDto;
 
         public Builder(){
-            registeredSiteForm = new RegisteredSiteForm();
+            registeredSiteDto = new RegisteredSiteDto();
         }
 
         public Builder name(String name){
-            registeredSiteForm.name = name;
+            registeredSiteDto.name = name;
             return this;
         }
 
         public Builder domain(String domain){
-            registeredSiteForm.domain = domain;
+            registeredSiteDto.domain = domain;
             return this;
         }
 
         public Builder description(String description){
-            registeredSiteForm.description = description;
+            registeredSiteDto.description = description;
             return this;
         }
 
         public Builder logo(String logo){
-            registeredSiteForm.logo = logo;
+            registeredSiteDto.logo = logo;
             return this;
         }
 
         public Builder keywords(List<String> keywords){
-            registeredSiteForm.keywords = keywords;
+            registeredSiteDto.keywords = keywords;
             return this;
         }
 
         public Builder language(String language){
-            registeredSiteForm.language = language;
+            registeredSiteDto.language = language;
             return this;
         }
 
         public Builder country(String country){
-            registeredSiteForm.country = country;
+            registeredSiteDto.country = country;
             return this;
         }
 
         public Builder url(String url){
-            registeredSiteForm.url = url;
+            registeredSiteDto.url = url;
             return this;
         }
 
         public Builder scrapingType(SiteConfiguration.ScrapingType scrapingType){
-            registeredSiteForm.scrapingType = scrapingType;
+            registeredSiteDto.scrapingType = scrapingType;
             return this;
         }
 
         public Builder selectorQueries(List<SelectorQuery> selectorQueries){
-            registeredSiteForm.selectorQueries = selectorQueries;
+            registeredSiteDto.selectorQueries = selectorQueries;
             return this;
         }
 
-        public RegisteredSiteForm build(){
-            return registeredSiteForm;
+        public RegisteredSiteDto build(){
+            return registeredSiteDto;
         }
     }
 
