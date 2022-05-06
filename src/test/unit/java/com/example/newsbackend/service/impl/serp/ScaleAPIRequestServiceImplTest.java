@@ -1,6 +1,7 @@
-package com.example.newsbackend.service.serp;
+package com.example.newsbackend.service.impl.serp;
 
 import com.example.newsbackend.exception.ScaleAPIException;
+import com.example.newsbackend.util.URLCustom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,18 +21,18 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ScaleAPIRequestTest {
+class ScaleAPIRequestServiceImplTest {
 
     @Mock
-    private HTTPRequest mockHttpRequest;
+    private HTTPRequestServiceImpl mockHttpRequestServiceImpl;
     @Mock
     private URLCustom mockUrlCustom;
 
-    private ScaleAPIRequest scaleAPIRequestUnderTest;
+    private ScaleAPIRequestServiceImpl scaleAPIRequestServiceImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        scaleAPIRequestUnderTest = new ScaleAPIRequest(mockHttpRequest, mockUrlCustom);
+        scaleAPIRequestServiceImplUnderTest = new ScaleAPIRequestServiceImpl(mockHttpRequestServiceImpl, mockUrlCustom);
     }
 
 
@@ -51,15 +52,15 @@ class ScaleAPIRequestTest {
         //When
         when(mockUrlCustom.buildParametersURL(anyString(),
                 any(RequestParameters.class))).thenReturn(new URL(buildUrl));
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(json);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(json);
 
         // Then
-        final APIResponse result = scaleAPIRequestUnderTest.getResponse(requestParameters);
+        final APIResponse result = scaleAPIRequestServiceImplUnderTest.getResponse(requestParameters);
 
         // Verify
         assertThat(result.getNewsResultPages().size()).isEqualTo(expectedPagesAmount);
         assertThat(result.getRequestInfo()).isNotNull();
-        verify(mockHttpRequest).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl).sendRequest(any(URL.class));
     }
 
     @Test
@@ -76,16 +77,16 @@ class ScaleAPIRequestTest {
         //When
         when(mockUrlCustom.buildParametersURL(anyString(),
                 any(RequestParameters.class))).thenReturn(new URL(buildUrl));
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(json);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(json);
 
         // Then
-        final APIResponse result = scaleAPIRequestUnderTest.getResponse(requestParameters);
+        final APIResponse result = scaleAPIRequestServiceImplUnderTest.getResponse(requestParameters);
 
         // Verify
         assertThat(result).isNotNull();
         assertThat(result.getNewsResultPages()).isEmpty();
         assertThat(result.getRequestInfo()).isNotNull();
-        verify(mockHttpRequest,times(1)).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl,times(1)).sendRequest(any(URL.class));
     }
 
     @Test
@@ -102,14 +103,14 @@ class ScaleAPIRequestTest {
         //When
         when(mockUrlCustom.buildParametersURL(anyString(),
                 any(RequestParameters.class))).thenReturn(new URL(buildUrl));
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(json);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(json);
 
         // Then
-        assertThatThrownBy(() -> scaleAPIRequestUnderTest.getResponse(requestParameters))
+        assertThatThrownBy(() -> scaleAPIRequestServiceImplUnderTest.getResponse(requestParameters))
                 .isInstanceOf(ScaleAPIException.class);
 
         // Verify
-        verify(mockHttpRequest).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl).sendRequest(any(URL.class));
     }
     @Test
     void if_RequestParameters_Are_Invalid_Should_Throw_ScaleException() throws Exception {
@@ -123,11 +124,11 @@ class ScaleAPIRequestTest {
         //When
         when(mockUrlCustom.buildParametersURL(anyString(),any(RequestParameters.class))).thenThrow(new MalformedURLException());
         // Then
-        assertThatThrownBy(() -> scaleAPIRequestUnderTest.getResponse(requestParameters))
+        assertThatThrownBy(() -> scaleAPIRequestServiceImplUnderTest.getResponse(requestParameters))
                         .isInstanceOf(ScaleAPIException.class);
 
         // Verify
-        verify(mockHttpRequest,never()).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl,never()).sendRequest(any(URL.class));
     }
     private String readTextFromFile(String name) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();

@@ -1,6 +1,6 @@
 package com.example.newsbackend.service.impl.serp;
 
-import com.example.newsbackend.service.impl.scrape.stable.TextExtractor;
+import com.example.newsbackend.service.impl.scrape.stable.TextExtractorImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -8,17 +8,17 @@ import java.net.URL;
 import java.net.URLConnection;
 
 @Service
-public class HTTPRequest {
+public class HTTPRequestServiceImpl {
 
-    private final TextExtractor textExtractor;
+    private final TextExtractorImpl textExtractorImpl;
 
-    public HTTPRequest(TextExtractor textExtractor) {
-        this.textExtractor = textExtractor;
+    public HTTPRequestServiceImpl(TextExtractorImpl textExtractorImpl) {
+        this.textExtractorImpl = textExtractorImpl;
     }
 
     public String sendRequest(URL url) throws IOException {
         URLConnection conn = url.openConnection();
-        return textExtractor.extractTextFromInputStream(conn.getInputStream());
+        return textExtractorImpl.extractTextFromInputStream(conn.getInputStream());
     }
 
 

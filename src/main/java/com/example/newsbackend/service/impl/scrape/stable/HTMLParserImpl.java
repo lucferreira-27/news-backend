@@ -1,6 +1,6 @@
 package com.example.newsbackend.service.impl.scrape.stable;
 
-import com.example.newsbackend.repository.sites.SelectorQuery;
+import com.example.newsbackend.entity.sites.SelectorQuery;
 import com.example.newsbackend.exception.SelectorQueryException;
 import com.example.newsbackend.service.scrape.HTMLParserService;
 import org.jsoup.Jsoup;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-public class HtmlParser implements HTMLParserService {
+public class HTMLParserImpl implements HTMLParserService {
 
 
     public List<ParseValues> parse(String html, List<SelectorQuery> scrapeQueries) {

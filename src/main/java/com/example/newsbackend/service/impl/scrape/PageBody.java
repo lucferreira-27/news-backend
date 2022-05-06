@@ -1,6 +1,6 @@
-package com.example.newsbackend.repository.page;
+package com.example.newsbackend.service.impl.scrape;
 
-import com.example.newsbackend.entity.RegisteredSite;
+import com.example.newsbackend.entity.sites.RegisteredSite;
 import com.example.newsbackend.service.impl.serp.NewsResultPage;
 
 public class PageBody {

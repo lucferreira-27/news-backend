@@ -1,10 +1,11 @@
-package com.example.newsbackend.service.scrape.dynamic;
+package com.example.newsbackend.service.impl.scrape.dynamic;
 
-import com.example.newsbackend.repository.sites.SelectorQuery;
-import com.example.newsbackend.repository.sites.SiteConfiguration;
-import com.example.newsbackend.service.scrape.ScrapingException;
-import com.example.newsbackend.service.scrape.stable.HtmlParser;
-import com.example.newsbackend.service.scrape.stable.ParseValues;
+import com.example.newsbackend.exception.EmuBrowserException;
+import com.example.newsbackend.entity.sites.SelectorQuery;
+import com.example.newsbackend.entity.sites.SiteConfiguration;
+import com.example.newsbackend.exception.ScrapingException;
+import com.example.newsbackend.service.impl.scrape.stable.HTMLParserImpl;
+import com.example.newsbackend.service.impl.scrape.stable.ParseValues;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +22,9 @@ import static org.mockito.Mockito.*;
 class DynamicScrapingBotTest {
 
     @Mock
-    private FirefoxSeleniumBrowser mockEmuBrowser;
+    private FirefoxImplSeleniumBrowser mockEmuBrowser;
     @Mock
-    private HtmlParser mockHtmlParser;
+    private HTMLParserImpl mockHtmlParser;
     private DynamicScrapingBot dynamicScrapingBotUnderTest;
 
     @BeforeEach

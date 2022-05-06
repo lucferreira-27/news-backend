@@ -9,22 +9,22 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
-class FirefoxSeleniumBrowserAbstractTest {
+class FirefoxAbstractSeleniumBrowserTest {
 
-    private FirefoxSeleniumBrowserImpl firefoxSeleniumBrowserImplUnderTest;
+    private FirefoxImplSeleniumBrowser firefoxSeleniumBrowserImplUnderTest;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        firefoxSeleniumBrowserImplUnderTest = new FirefoxSeleniumBrowserImpl();
+        firefoxSeleniumBrowserImplUnderTest = new FirefoxImplSeleniumBrowser();
     }
 
 
     @Test
     void when_InitRemoteWebDriver_Should_CreateFirefoxDriver(){
         //Given
-        FirefoxSeleniumBrowserImpl spyFirefoxSeleniumBrowserImpl = spy(firefoxSeleniumBrowserImplUnderTest);
+        FirefoxImplSeleniumBrowser spyFirefoxSeleniumBrowserImpl = spy(firefoxSeleniumBrowserImplUnderTest);
         FirefoxDriver mockFirefoxDriver = mock(FirefoxDriver.class);
 
         //When

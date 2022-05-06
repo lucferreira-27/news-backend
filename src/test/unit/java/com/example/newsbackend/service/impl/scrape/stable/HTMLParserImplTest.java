@@ -1,6 +1,6 @@
 package com.example.newsbackend.service.impl.scrape.stable;
 
-import com.example.newsbackend.repository.sites.SelectorQuery;
+import com.example.newsbackend.entity.sites.SelectorQuery;
 import com.example.newsbackend.exception.SelectorQueryException;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.MatcherAssert;
@@ -19,13 +19,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-class HtmlParserTest {
+class HTMLParserImplTest {
 
-    private HtmlParser htmlParserUnderTest;
+    private HTMLParserImpl htmlParserUnderTest;
 
     @BeforeEach
     void setUp() {
-        htmlParserUnderTest = new HtmlParser();
+        htmlParserUnderTest = new HTMLParserImpl();
     }
 
     @Test

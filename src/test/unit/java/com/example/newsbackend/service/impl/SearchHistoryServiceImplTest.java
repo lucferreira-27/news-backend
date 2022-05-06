@@ -1,4 +1,4 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
 import com.example.newsbackend.exception.ResourceNotFoundException;
 import com.example.newsbackend.entity.search.SearchHistory;

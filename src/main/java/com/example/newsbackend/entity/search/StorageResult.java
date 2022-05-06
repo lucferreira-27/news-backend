@@ -1,4 +1,6 @@
-package com.example.newsbackend.entity;
+package com.example.newsbackend.entity.search;
+import com.example.newsbackend.entity.nlu.ContentAnaliseResult;
+import com.example.newsbackend.entity.sites.RegisteredSite;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -16,7 +18,8 @@ public class StorageResult {
     private long analysisTime;
     @OneToOne(cascade = CascadeType.PERSIST)
     private ContentAnaliseResult contentAnaliseResult;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @JoinColumn(name = "search_history_id",nullable = false)
     @JsonIgnore
     private SearchHistory searchHistory;
     @Embedded

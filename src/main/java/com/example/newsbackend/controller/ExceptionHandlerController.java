@@ -1,9 +1,9 @@
 package com.example.newsbackend.controller;
 
-import com.example.newsbackend.repository.ErrorMessage;
-import com.example.newsbackend.service.BadRequestException;
-import com.example.newsbackend.service.ResourceAlreadyExistsException;
-import com.example.newsbackend.service.ResourceNotFoundException;
+import com.example.newsbackend.controller.dtos.ErrorMessageDto;
+import com.example.newsbackend.exception.BadRequestException;
+import com.example.newsbackend.exception.ResourceAlreadyExistsException;
+import com.example.newsbackend.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionHandlerController {
     @ExceptionHandler(value = {ResourceNotFoundException.class})
-    public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+    public ResponseEntity<ErrorMessageDto> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ErrorMessageDto message = new ErrorMessageDto(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
                 ex.getMessage(),
@@ -31,8 +31,8 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(value = {ResourceAlreadyExistsException.class})
-    public ResponseEntity<ErrorMessage> resourceAlreadyExistsException(ResourceAlreadyExistsException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+    public ResponseEntity<ErrorMessageDto> resourceAlreadyExistsException(ResourceAlreadyExistsException ex, WebRequest request) {
+        ErrorMessageDto message = new ErrorMessageDto(
                 HttpStatus.CONFLICT.value(),
                 new Date(),
                 ex.getMessage(),
@@ -42,8 +42,8 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(value = {BadRequestException.class})
-    public ResponseEntity<ErrorMessage> badRequestException(BadRequestException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+    public ResponseEntity<ErrorMessageDto> badRequestException(BadRequestException ex, WebRequest request) {
+        ErrorMessageDto message = new ErrorMessageDto(
                 HttpStatus.BAD_REQUEST.value(),
                 new Date(),
                 ex.getMessage(),
@@ -52,13 +52,13 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<ErrorMessage> badRequestException(ConstraintViolationException ex, WebRequest request) {
+    public ResponseEntity<ErrorMessageDto> badRequestException(ConstraintViolationException ex, WebRequest request) {
         String msg = ex.getConstraintViolations()
                 .stream()
                 .map(violation -> violation.getMessage())
                 .collect(Collectors.joining(","));
 
-        ErrorMessage message = new ErrorMessage(
+        ErrorMessageDto message = new ErrorMessageDto(
                 HttpStatus.BAD_REQUEST.value(),
                 new Date(),
                 msg,
@@ -67,8 +67,8 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErrorMessage> routeNotFoundException(WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+    public ResponseEntity<ErrorMessageDto> routeNotFoundException(WebRequest request) {
+        ErrorMessageDto message = new ErrorMessageDto(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
                 "Route not found",

@@ -1,13 +1,12 @@
-package com.example.newsbackend.service.serp;
+package com.example.newsbackend.service.impl.serp;
 
-import com.example.newsbackend.service.scrape.stable.TextExtractor;
+import com.example.newsbackend.service.impl.scrape.stable.TextExtractorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -20,13 +19,13 @@ import static org.mockito.Mockito.when;
 class HTTPRequestTest {
 
     @Mock
-    private TextExtractor mockTextExtractor;
+    private TextExtractorImpl mockTextExtractorImpl;
 
-    private HTTPRequest httpRequestUnderTest;
+    private HTTPRequestServiceImpl httpRequestServiceImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        httpRequestUnderTest = new HTTPRequest(mockTextExtractor);
+        httpRequestServiceImplUnderTest = new HTTPRequestServiceImpl(mockTextExtractorImpl);
     }
 
     @Test
@@ -36,10 +35,10 @@ class HTTPRequestTest {
         final String expected = "content";
 
         // When
-        when(mockTextExtractor.extractTextFromInputStream(any(InputStream.class))).thenReturn(expected);
+        when(mockTextExtractorImpl.extractTextFromInputStream(any(InputStream.class))).thenReturn(expected);
 
         // Then
-        final String result = httpRequestUnderTest.sendRequest(new URL("https://example.com/"));
+        final String result = httpRequestServiceImplUnderTest.sendRequest(new URL("https://example.com/"));
 
         // Verify the results
         assertThat(result).isEqualTo(expected);

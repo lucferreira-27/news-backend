@@ -1,8 +1,11 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.repository.sites.RegisteredSite;
-import com.example.newsbackend.repository.sites.RegisteredSiteDto;
+import com.example.newsbackend.entity.sites.RegisteredSite;
+import com.example.newsbackend.controller.dtos.RegisteredSiteDto;
 import com.example.newsbackend.repository.sites.RegisteredSiteRepository;
+import com.example.newsbackend.service.RegisteredSitesService;
+import com.example.newsbackend.exception.ResourceAlreadyExistsException;
+import com.example.newsbackend.exception.ResourceNotFoundException;
 import com.example.newsbackend.util.RegisteredSiteDtoMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;

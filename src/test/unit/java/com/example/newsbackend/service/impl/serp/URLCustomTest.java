@@ -1,5 +1,6 @@
-package com.example.newsbackend.service.serp;
+package com.example.newsbackend.service.impl.serp;
 
+import com.example.newsbackend.util.URLCustom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

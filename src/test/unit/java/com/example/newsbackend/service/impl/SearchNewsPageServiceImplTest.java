@@ -1,4 +1,4 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
 import com.example.newsbackend.exception.ScaleAPIException;
 import com.example.newsbackend.service.impl.SearchNewsPageServiceImpl;

@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.impl.nlu;
+package com.example.newsbackend.service.nlu;
 
 import com.example.newsbackend.exception.NLUException;
 

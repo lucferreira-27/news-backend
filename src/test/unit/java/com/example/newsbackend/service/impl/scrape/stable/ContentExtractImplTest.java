@@ -17,18 +17,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ContentExtractTest {
+class ContentExtractImplTest {
 
     @Mock
-    private DownloadPage mockDownloadPage;
+    private DownloadPageImpl mockDownloadPageImpl;
     @Mock
-    private TextExtractor mockTextExtractor;
+    private TextExtractorImpl mockTextExtractorImpl;
 
-    private ContentExtract contentExtractUnderTest;
+    private ContentExtractImpl contentExtractImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        contentExtractUnderTest = new ContentExtract(mockDownloadPage, mockTextExtractor);
+        contentExtractImplUnderTest = new ContentExtractImpl(mockDownloadPageImpl, mockTextExtractorImpl);
     }
 
     @Test
@@ -37,16 +37,16 @@ class ContentExtractTest {
         final InputStream spyInputStream = spy(new ByteArrayInputStream("result".getBytes()));
 
         //When
-        when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenReturn("result");
+        when(mockDownloadPageImpl.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
+        when(mockTextExtractorImpl.extractTextFromInputStream(spyInputStream)).thenReturn("result");
 
         // Then
-        final String result = contentExtractUnderTest.extract("https://example.com/");
+        final String result = contentExtractImplUnderTest.extract("https://example.com/");
 
         // Verify
         assertThat(result).isEqualTo("result");
-        verify(mockDownloadPage,times(1)).getPageInputStream(any(URL.class));
-        verify(mockTextExtractor,times(1)).extractTextFromInputStream(any(InputStream.class));
+        verify(mockDownloadPageImpl,times(1)).getPageInputStream(any(URL.class));
+        verify(mockTextExtractorImpl,times(1)).extractTextFromInputStream(any(InputStream.class));
     }
 
     @Test
@@ -55,11 +55,11 @@ class ContentExtractTest {
         final InputStream spyInputStream = spy(InputStream.nullInputStream());
 
         // When
-        when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenReturn("");
+        when(mockDownloadPageImpl.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
+        when(mockTextExtractorImpl.extractTextFromInputStream(spyInputStream)).thenReturn("");
 
         // Then
-        final String result = contentExtractUnderTest.extract("https://example.com/");
+        final String result = contentExtractImplUnderTest.extract("https://example.com/");
 
         // Verify
         assertThat(result).isEmpty();
@@ -70,10 +70,10 @@ class ContentExtractTest {
     @Test
     void if_When_Extract_DownloadPage_ThrowsIOException() throws Exception {
         // When
-        when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenThrow(IOException.class);
+        when(mockDownloadPageImpl.getPageInputStream(new URL("https://example.com/"))).thenThrow(IOException.class);
 
         // Verify
-        assertThatThrownBy(() -> contentExtractUnderTest.extract("https://example.com/")).isInstanceOf(IOException.class);
+        assertThatThrownBy(() -> contentExtractImplUnderTest.extract("https://example.com/")).isInstanceOf(IOException.class);
     }
 
     @Test
@@ -81,11 +81,11 @@ class ContentExtractTest {
         // Given
         final InputStream spyInputStream = spy(new ByteArrayInputStream("content".getBytes()));
         //When
-        when(mockDownloadPage.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
-        when(mockTextExtractor.extractTextFromInputStream(spyInputStream)).thenThrow(IOException.class);
+        when(mockDownloadPageImpl.getPageInputStream(new URL("https://example.com/"))).thenReturn(spyInputStream);
+        when(mockTextExtractorImpl.extractTextFromInputStream(spyInputStream)).thenThrow(IOException.class);
 
         // Verify
-        assertThatThrownBy(() -> contentExtractUnderTest.extract("https://example.com/")).isInstanceOf(IOException.class);
+        assertThatThrownBy(() -> contentExtractImplUnderTest.extract("https://example.com/")).isInstanceOf(IOException.class);
 
     }
 }

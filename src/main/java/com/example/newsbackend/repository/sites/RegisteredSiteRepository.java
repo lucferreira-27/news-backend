@@ -1,5 +1,6 @@
 package com.example.newsbackend.repository.sites;
 
+import com.example.newsbackend.entity.sites.RegisteredSite;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -1,18 +1,19 @@
 package com.example.newsbackend.service.impl;
 
 import com.example.newsbackend.exception.PageValidatorException;
-import com.example.newsbackend.repository.sites.RegisteredSite;
+import com.example.newsbackend.entity.sites.RegisteredSite;
 import com.example.newsbackend.repository.sites.RegisteredSiteRepository;
+import com.example.newsbackend.service.PageValidatorService;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.Optional;
 
 @Service
-public class PageValidatorImpl implements PageValidatorService {
+public class PageValidatorServiceImpl implements PageValidatorService {
     private final RegisteredSiteRepository registeredSiteRepository;
 
-    public PageValidatorImpl(RegisteredSiteRepository registeredSiteRepository) {
+    public PageValidatorServiceImpl(RegisteredSiteRepository registeredSiteRepository) {
         this.registeredSiteRepository = registeredSiteRepository;
     }
 

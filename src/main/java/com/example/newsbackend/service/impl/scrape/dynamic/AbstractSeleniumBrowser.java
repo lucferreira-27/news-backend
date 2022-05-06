@@ -4,7 +4,7 @@ import com.example.newsbackend.service.scrape.EmuBrowserService;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 
-public abstract class SeleniumBrowserAbstract implements EmuBrowserService {
+public abstract class AbstractSeleniumBrowser implements EmuBrowserService {
     private RemoteWebDriver driver;
     private EmuBrowserConfiguration config;
     @Override

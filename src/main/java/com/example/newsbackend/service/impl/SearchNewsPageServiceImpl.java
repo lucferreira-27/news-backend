@@ -1,39 +1,37 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.repository.page.PageHeadline;
-import com.example.newsbackend.service.scrape.ScrapingException;
-import com.example.newsbackend.service.scrape.stable.ParseValues;
-import com.example.newsbackend.service.serp.*;
+import com.example.newsbackend.exception.NoneSearchResultException;
+import com.example.newsbackend.exception.ScaleAPIException;
+import com.example.newsbackend.service.SearchNewsPageService;
+import com.example.newsbackend.service.impl.serp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class SearchNewsPageServiceImpl implements SearchNewsPageService {
 
 
-    private final ScaleAPIRequest scaleAPIRequest;
+    private final ScaleAPIRequestServiceImpl scaleAPIRequestServiceImpl;
     @Value("${scale.apikey}")
     private  String apikey;
     private static final String SEARCH_TYPE = "news";
 
 
     @Autowired
-    public SearchNewsPageServiceImpl(ScaleAPIRequest scaleAPIRequest) {
-        this.scaleAPIRequest = scaleAPIRequest;
+    public SearchNewsPageServiceImpl(ScaleAPIRequestServiceImpl scaleAPIRequestServiceImpl) {
+        this.scaleAPIRequestServiceImpl = scaleAPIRequestServiceImpl;
     }
 
 
     @Override
-    public List<NewsResultPage> search(Map<String, String> params) throws  ScaleAPIException {
+    public List<NewsResultPage> search(Map<String, String> params) throws ScaleAPIException {
 
         RequestParameters requestParameters = buildRequestParameters(params);
-        APIResponse response = scaleAPIRequest.getResponse(requestParameters);
+        APIResponse response = scaleAPIRequestServiceImpl.getResponse(requestParameters);
         if(response.getNewsResultPages().size() == 0){
             throw new NoneSearchResultException("No results found for query \"" + requestParameters.getQuery() + "\"");
         };

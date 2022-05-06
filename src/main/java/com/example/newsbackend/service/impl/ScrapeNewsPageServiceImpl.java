@@ -1,28 +1,27 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.repository.page.PageBody;
-import com.example.newsbackend.repository.page.PageHeadline;
-import com.example.newsbackend.repository.sites.RegisteredSite;
-import com.example.newsbackend.service.scrape.ScrapingException;
-import com.example.newsbackend.service.scrape.stable.ParseValues;
-import com.example.newsbackend.service.serp.NewsResultPage;
-import com.example.newsbackend.service.tools.PageScrapeTool;
+import com.example.newsbackend.entity.sites.RegisteredSite;
+import com.example.newsbackend.exception.PageValidatorException;
+import com.example.newsbackend.service.ScrapeNewsPageService;
+import com.example.newsbackend.exception.ScrapingException;
+import com.example.newsbackend.service.impl.scrape.PageBody;
+import com.example.newsbackend.service.impl.scrape.stable.ParseValues;
+import com.example.newsbackend.service.impl.serp.NewsResultPage;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
-    private final PageScrapeTool pageScrapeTool;
+    private final PageScrapeServiceImpl pageScrapeServiceImpl;
 
-    public ScrapeNewsPageServiceImpl(PageScrapeTool pageScrapeTool) {
-        this.pageScrapeTool = pageScrapeTool;
+    public ScrapeNewsPageServiceImpl(PageScrapeServiceImpl pageScrapeServiceImpl) {
+        this.pageScrapeServiceImpl = pageScrapeServiceImpl;
     }
 
 
     @Override
-    public PageBody scrapeNewsPages(NewsResultPage searchResult,RegisteredSite registeredSite) throws PageValidatorException, ScrapingException {
+    public PageBody scrapeNewsPages(NewsResultPage searchResult, RegisteredSite registeredSite) throws PageValidatorException, ScrapingException {
         String searchUrl = searchResult.getLink();
 
         List<ParseValues> parseValues = getParseValueByUrl(registeredSite,searchUrl);
@@ -40,7 +39,7 @@ public class ScrapeNewsPageServiceImpl implements ScrapeNewsPageService {
     }
 
     private  List<ParseValues>  scrapeRegisteredSite(RegisteredSite registeredSite, String url) throws ScrapingException {
-        List<ParseValues> pagesContents = pageScrapeTool.scrape(registeredSite.getSiteConfiguration(), url);
+        List<ParseValues> pagesContents = pageScrapeServiceImpl.scrape(registeredSite.getSiteConfiguration(), url);
         return pagesContents;
     }
 

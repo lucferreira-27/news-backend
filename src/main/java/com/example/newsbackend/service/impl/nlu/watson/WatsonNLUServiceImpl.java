@@ -1,17 +1,17 @@
 package com.example.newsbackend.service.impl.nlu.watson;
 
 import com.example.newsbackend.exception.NLUException;
-import com.example.newsbackend.service.impl.nlu.NaturalLanguageUnderstandingService;
+import com.example.newsbackend.service.nlu.NaturalLanguageUnderstandingService;
 import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WatsonNLUService implements NaturalLanguageUnderstandingService {
+public class WatsonNLUServiceImpl implements NaturalLanguageUnderstandingService {
 
-    private final WatsonAnalyze watsonAnalyze;
+    private final WatsonAnalyzeImpl watsonAnalyzeImpl;
 
-    public WatsonNLUService(WatsonAnalyze watsonAnalyze) {
-        this.watsonAnalyze = watsonAnalyze;
+    public WatsonNLUServiceImpl(WatsonAnalyzeImpl watsonAnalyzeImpl) {
+        this.watsonAnalyzeImpl = watsonAnalyzeImpl;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class WatsonNLUService implements NaturalLanguageUnderstandingService {
 
     private String analyze(WatsonAnalyzeOptions options) throws NLUException {
         try {
-            AnalysisResults response = watsonAnalyze.analyze(options);
+            AnalysisResults response = watsonAnalyzeImpl.analyze(options);
             String result = response.toString();
             return result; // return the JSON response
         } catch (Exception e) {

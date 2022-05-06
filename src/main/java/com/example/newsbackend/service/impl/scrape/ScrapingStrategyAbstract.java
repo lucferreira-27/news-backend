@@ -1,18 +1,18 @@
 package com.example.newsbackend.service.impl.scrape;
 
 import com.example.newsbackend.exception.ScrapingException;
-import com.example.newsbackend.repository.sites.SiteConfiguration;
-import com.example.newsbackend.service.impl.scrape.stable.HtmlParser;
+import com.example.newsbackend.entity.sites.SiteConfiguration;
+import com.example.newsbackend.service.impl.scrape.stable.HTMLParserImpl;
 import com.example.newsbackend.service.impl.scrape.stable.ParseValues;
 
 import java.util.List;
 
 
-public abstract class ScrapingStrategy {
+public abstract class ScrapingStrategyAbstract {
 
-    private final HtmlParser htmlParser;
+    private final HTMLParserImpl htmlParser;
 
-    protected ScrapingStrategy(HtmlParser htmlParser) {
+    protected ScrapingStrategyAbstract(HTMLParserImpl htmlParser) {
         this.htmlParser = htmlParser;
     }
 

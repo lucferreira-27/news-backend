@@ -1,8 +1,8 @@
-package com.example.newsbackend.service.scrape.stable;
+package com.example.newsbackend.service.impl.scrape.stable;
 
-import com.example.newsbackend.repository.sites.SelectorQuery;
-import com.example.newsbackend.repository.sites.SiteConfiguration;
-import com.example.newsbackend.service.scrape.ScrapingException;
+import com.example.newsbackend.entity.sites.SelectorQuery;
+import com.example.newsbackend.entity.sites.SiteConfiguration;
+import com.example.newsbackend.exception.ScrapingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,10 +22,10 @@ class StaticScrapingBotTest {
 
 
     @Mock
-    private PureContentExtract mockPureContentExtract;
+    private ContentExtractImpl mockContentExtractImpl;
 
     @Mock
-    private HtmlParser mockHtmlParser;
+    private HTMLParserImpl mockHtmlParser;
 
     private StaticScrapingBot staticScrapingBotUnderTest;
 
@@ -33,7 +33,7 @@ class StaticScrapingBotTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        staticScrapingBotUnderTest = new StaticScrapingBot(mockHtmlParser, mockPureContentExtract);
+        staticScrapingBotUnderTest = new StaticScrapingBot(mockHtmlParser, mockContentExtractImpl);
     }
 
 
@@ -102,14 +102,14 @@ class StaticScrapingBotTest {
         siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
-        when(mockPureContentExtract.extract(testUrl)).thenReturn(testContentExtract);
+        when(mockContentExtractImpl.extract(testUrl)).thenReturn(testContentExtract);
 
         // Then
         final String result = staticScrapingBotUnderTest.scrapePage(testUrl);
 
         // Verify
         assertThat(result).isEqualTo(testContentExtract);
-        verify(mockPureContentExtract, times(1)).extract(any(String.class));
+        verify(mockContentExtractImpl, times(1)).extract(any(String.class));
 
     }
 
@@ -123,14 +123,14 @@ class StaticScrapingBotTest {
         siteConfiguration.setScrapingType(SiteConfiguration.ScrapingType.STATIC);
 
         // When
-        when(mockPureContentExtract.extract(testUrl)).thenThrow(IOException.class);
+        when(mockContentExtractImpl.extract(testUrl)).thenThrow(IOException.class);
 
         // Then
         assertThatThrownBy(() -> staticScrapingBotUnderTest.scrapePage(testUrl))
                 .isInstanceOf(IOException.class);
 
         // Verify
-        verify(mockPureContentExtract, times(1)).extract(any(String.class));
+        verify(mockContentExtractImpl, times(1)).extract(any(String.class));
     }
 
 

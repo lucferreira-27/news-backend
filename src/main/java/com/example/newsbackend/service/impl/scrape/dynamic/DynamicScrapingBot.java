@@ -1,14 +1,15 @@
-package com.example.newsbackend.service.scrape.dynamic;
+package com.example.newsbackend.service.impl.scrape.dynamic;
 
-import com.example.newsbackend.service.scrape.ScrapingStrategy;
-import com.example.newsbackend.service.scrape.stable.HtmlParser;
+import com.example.newsbackend.exception.EmuBrowserException;
+import com.example.newsbackend.service.impl.scrape.ScrapingStrategyAbstract;
+import com.example.newsbackend.service.impl.scrape.stable.HTMLParserImpl;
 import org.springframework.stereotype.Service;
 
 @Service("DYNAMIC")
-public class DynamicScrapingBot extends ScrapingStrategy  {
-    private final FirefoxSeleniumBrowser emuBrowser;
+public class DynamicScrapingBot extends ScrapingStrategyAbstract {
+    private final FirefoxImplSeleniumBrowser emuBrowser;
 
-    public DynamicScrapingBot(HtmlParser htmlParser, FirefoxSeleniumBrowser emuBrowser) {
+    public DynamicScrapingBot(HTMLParserImpl htmlParser, FirefoxImplSeleniumBrowser emuBrowser) {
         super(htmlParser);
         this.emuBrowser = emuBrowser;
     }

@@ -11,15 +11,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-class DownloadPageTest {
+class DownloadPageImplTest {
 
-    private DownloadPage downloadPageUnderTest;
+    private DownloadPageImpl downloadPageImplUnderTest;
 
 
 
     @BeforeEach
     void setUp() {
-        downloadPageUnderTest = new DownloadPage();
+        downloadPageImplUnderTest = new DownloadPageImpl();
     }
     @Test
     void when_GetPageInputStream_Given_URL_Should_Return_InputStream() throws Exception {
@@ -32,7 +32,7 @@ class DownloadPageTest {
         when(mockUrl.openConnection()).thenReturn(mockUrlConnection);
         when(mockUrlConnection.getInputStream()).thenReturn(expectResult);
         // Then
-        final InputStream result = downloadPageUnderTest.getPageInputStream(mockUrl);
+        final InputStream result = downloadPageImplUnderTest.getPageInputStream(mockUrl);
 
         // Verify
         assertThat(result).isEqualTo(expectResult);
@@ -45,7 +45,7 @@ class DownloadPageTest {
         //When
         doThrow(new IOException()).when(mockUrl).openConnection();
         //Then
-        assertThatThrownBy(() -> downloadPageUnderTest.getPageInputStream(mockUrl))
+        assertThatThrownBy(() -> downloadPageImplUnderTest.getPageInputStream(mockUrl))
                 .isInstanceOf(IOException.class);
     }
 

@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.impl.scrape;
+package com.example.newsbackend.exception;
 
 public class SelectorQueryException extends RuntimeException {
     public SelectorQueryException(String message) {

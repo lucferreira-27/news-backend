@@ -12,17 +12,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-class WatsonNLUServiceTest {
+class WatsonNLUServiceImplTest {
 
-    private WatsonNLUService watsonNLUServiceUnderTest;
+    private WatsonNLUServiceImpl watsonNLUServiceImplUnderTest;
 
     @Mock
-    private WatsonAnalyze mockWatsonAnalyze;
+    private WatsonAnalyzeImpl mockWatsonAnalyzeImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        watsonNLUServiceUnderTest = new WatsonNLUService(mockWatsonAnalyze);
+        watsonNLUServiceImplUnderTest = new WatsonNLUServiceImpl(mockWatsonAnalyzeImpl);
 
     }
 
@@ -35,21 +35,21 @@ class WatsonNLUServiceTest {
         String expectResult = "Watson analysis result";
 
         //When
-        when(mockWatsonAnalyze.analyze(
+        when(mockWatsonAnalyzeImpl.analyze(
                 any(WatsonAnalyzeOptions.class))
         ).thenReturn(mockAnalysisResults);
 
-        doReturn(mockAnalysisResults).when(mockWatsonAnalyze).analyze(
+        doReturn(mockAnalysisResults).when(mockWatsonAnalyzeImpl).analyze(
                 any(WatsonAnalyzeOptions.class));
 
         when(mockAnalysisResults.toString())
                 .thenReturn(expectResult);
         //Then
-        String result = watsonNLUServiceUnderTest.startAnalysis(text);
+        String result = watsonNLUServiceImplUnderTest.startAnalysis(text);
 
         //Verify
         assertThat(result).isEqualTo(expectResult);
-        verify(mockWatsonAnalyze).analyze(any(WatsonAnalyzeOptions.class));
+        verify(mockWatsonAnalyzeImpl).analyze(any(WatsonAnalyzeOptions.class));
     }
     @Test
     void if_When_Analyze_Any_Exception_Is_Throw_Should_Throw_NLUException() throws NLUException {
@@ -57,17 +57,17 @@ class WatsonNLUServiceTest {
         String text = "Random text to analyse";
 
         //When
-        when(mockWatsonAnalyze.analyze(
+        when(mockWatsonAnalyzeImpl.analyze(
                 any(WatsonAnalyzeOptions.class))
         ).thenThrow(new RuntimeException());
 
         //Then
-        assertThatThrownBy(() -> watsonNLUServiceUnderTest.startAnalysis(text))
+        assertThatThrownBy(() -> watsonNLUServiceImplUnderTest.startAnalysis(text))
                 .isInstanceOf(NLUException.class)
                 .hasMessage("Failed to analyze text");
         //Verify
-        verify(mockWatsonAnalyze).analyze(any(WatsonAnalyzeOptions.class));
-        verifyNoMoreInteractions(mockWatsonAnalyze);
+        verify(mockWatsonAnalyzeImpl).analyze(any(WatsonAnalyzeOptions.class));
+        verifyNoMoreInteractions(mockWatsonAnalyzeImpl);
 
     }
 }

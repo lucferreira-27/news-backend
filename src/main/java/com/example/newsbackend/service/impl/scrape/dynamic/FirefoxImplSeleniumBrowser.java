@@ -6,7 +6,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FirefoxSeleniumBrowserImpl extends SeleniumBrowserAbstract {
+public class FirefoxImplSeleniumBrowser extends AbstractSeleniumBrowser {
     public static final String DRIVER_NAME = "geckodriver";
     public static final String DRIVER_PROPERTY = "webdriver.gecko.driver";
     public static final Boolean IS_HEADLESS = true;

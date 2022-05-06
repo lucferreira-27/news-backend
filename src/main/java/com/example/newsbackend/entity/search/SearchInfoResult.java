@@ -1,4 +1,4 @@
-package com.example.newsbackend.entity;
+package com.example.newsbackend.entity.search;
 
 import javax.persistence.Embeddable;
 

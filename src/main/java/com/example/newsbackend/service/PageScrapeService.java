@@ -1,10 +1,8 @@
-package com.example.newsbackend.service.tools;
+package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.page.PageContent;
-import com.example.newsbackend.repository.sites.SiteConfiguration;
-import com.example.newsbackend.service.scrape.ScrapingException;
-import com.example.newsbackend.service.scrape.ScrapingStrategy;
-import com.example.newsbackend.service.scrape.stable.ParseValues;
+import com.example.newsbackend.entity.sites.SiteConfiguration;
+import com.example.newsbackend.exception.ScrapingException;
+import com.example.newsbackend.service.impl.scrape.stable.ParseValues;
 
 import java.util.List;
 

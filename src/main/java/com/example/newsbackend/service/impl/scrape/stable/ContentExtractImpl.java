@@ -8,20 +8,20 @@ import java.io.InputStream;
 import java.net.URL;
 
 @Service
-public class ContentExtract implements ContentExtractService {
+public class ContentExtractImpl implements ContentExtractService {
 
-    private final DownloadPage downloadPage;
-    private final TextExtractor textExtractor;
+    private final DownloadPageImpl downloadPageImpl;
+    private final TextExtractorImpl textExtractorImpl;
 
-    public ContentExtract(DownloadPage downloadPage, TextExtractor textExtractor) {
-        this.downloadPage = downloadPage;
-        this.textExtractor = textExtractor;
+    public ContentExtractImpl(DownloadPageImpl downloadPageImpl, TextExtractorImpl textExtractorImpl) {
+        this.downloadPageImpl = downloadPageImpl;
+        this.textExtractorImpl = textExtractorImpl;
     }
 
     public String extract(String url) throws IOException {
         String encodeUrl = encodeUrl(url);
-        InputStream inputStream = downloadPage.getPageInputStream(new URL(encodeUrl));
-        return textExtractor.extractTextFromInputStream(inputStream);
+        InputStream inputStream = downloadPageImpl.getPageInputStream(new URL(encodeUrl));
+        return textExtractorImpl.extractTextFromInputStream(inputStream);
     }
     private String encodeUrl(String url)  {
         return url.replace(" ", "%20");

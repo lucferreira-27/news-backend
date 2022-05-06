@@ -1,9 +1,10 @@
 package com.example.newsbackend.service.serp;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.List;
+import com.example.newsbackend.service.impl.serp.APIResponse;
+import com.example.newsbackend.service.impl.serp.RequestParameters;
 
-public interface APIRequest {
+import java.io.IOException;
+
+public interface APIRequestService {
     public APIResponse getResponse(RequestParameters requestParameters) throws IOException;
 }

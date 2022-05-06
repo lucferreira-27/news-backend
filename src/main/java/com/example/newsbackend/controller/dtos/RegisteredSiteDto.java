@@ -1,7 +1,7 @@
 package com.example.newsbackend.controller.dtos;
 
-import com.example.newsbackend.entity.SelectorQuery;
-import com.example.newsbackend.entity.SiteConfiguration;
+import com.example.newsbackend.entity.sites.SelectorQuery;
+import com.example.newsbackend.entity.sites.SiteConfiguration;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;

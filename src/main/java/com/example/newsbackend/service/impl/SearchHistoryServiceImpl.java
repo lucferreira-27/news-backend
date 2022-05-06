@@ -1,9 +1,11 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.repository.storage.SearchHistory;
+import com.example.newsbackend.entity.search.SearchHistory;
 import com.example.newsbackend.repository.storage.SearchHistoryRepository;
-import com.example.newsbackend.repository.storage.StorageResult;
-import com.example.newsbackend.service.serp.NewsResultPage;
+import com.example.newsbackend.entity.search.StorageResult;
+import com.example.newsbackend.exception.ResourceNotFoundException;
+import com.example.newsbackend.service.SearchHistoryService;
+import com.example.newsbackend.service.impl.serp.NewsResultPage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +36,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
 
         for (NewsResultPage newsResultPage : newsResultPages) {
             StorageResult storageResult = resultAnalysisService.analysis(newsResultPage);
+            storageResult.setSearchHistory(searchHistory);
             searchHistory.getStorageResults().add(storageResult);
         }
 
@@ -43,7 +46,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
     @Override
     public SearchHistory findById(Long id) {
         Optional<SearchHistory>  optional = searchHistoryRepository.findById(id);
-        SearchHistory searchHistory = optional.orElseThrow(() -> new ResourceNotFoundException("Search history with id \"" + id +"\" not found"));
+        SearchHistory searchHistory = optional.orElseThrow(() -> new ResourceNotFoundException("Search history with id " + id +" not found"));
         return searchHistory;
     }
 
@@ -60,7 +63,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
     public void deleteById(Long id) {
 
         if(!searchHistoryRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Search history with id \"" + id +"\" not found");
+            throw new ResourceNotFoundException("Search history with id " + id +" not found");
         }
         searchHistoryRepository.deleteById(id);
 

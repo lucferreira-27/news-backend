@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.scrape.dynamic;
+package com.example.newsbackend.service.impl.scrape.dynamic;
 
 public class EmuBrowserConfiguration {
     private String browserPath;

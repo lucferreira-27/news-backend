@@ -1,28 +1,26 @@
 package com.example.newsbackend.controller;
 
 import com.example.newsbackend.NewsBackendApplication;
-import com.example.newsbackend.repository.storage.SearchHistory;
+import com.example.newsbackend.entity.search.StorageResult;
+import com.example.newsbackend.exception.ScaleAPIException;
+import com.example.newsbackend.entity.search.SearchHistory;
 import com.example.newsbackend.repository.storage.SearchHistoryRepository;
-import com.example.newsbackend.service.nlu.watson.WatsonAnalyzeOptions;
-import com.example.newsbackend.service.serp.*;
+import com.example.newsbackend.service.impl.serp.*;
+import com.example.newsbackend.util.URLCustom;
 import com.ibm.cloud.sdk.core.http.Response;
 import com.ibm.cloud.sdk.core.http.ServiceCall;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -37,7 +35,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,11 +50,11 @@ class RestControllerSearchTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private HTTPRequest mockHttpRequest;
+    private HTTPRequestServiceImpl mockHttpRequestServiceImpl;
     @MockBean
     private NaturalLanguageUnderstanding mockNlu;
     @SpyBean
-    private ScaleAPIRequest spyScaleAPIRequest;
+    private ScaleAPIRequestServiceImpl spyScaleAPIRequestServiceImpl;
 
     @SpyBean
     private URLCustom mockUrlCustom;
@@ -82,7 +79,7 @@ class RestControllerSearchTest {
         AnalysisResults mockAnalysisResults = mock(AnalysisResults.class);
 
         // When
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
         when(mockNlu.analyze(any())).thenReturn(mockServiceCall);
         when(mockServiceCall.execute()).thenReturn(mockResponse);
         when(mockResponse.getResult()).thenReturn(mockAnalysisResults);
@@ -93,7 +90,7 @@ class RestControllerSearchTest {
                 .accept("application/json"));
         checkJsonPathSuccessReturn(resultActions.andExpect(status().isOk()));
         // Verify
-        verify(mockHttpRequest, times(1)).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl, times(1)).sendRequest(any(URL.class));
         verify(mockNlu, times(1)).analyze(any());
         verify(mockUrlCustom, times(1)).buildParametersURL(anyString(), any());
 
@@ -111,7 +108,7 @@ class RestControllerSearchTest {
         AnalysisResults mockAnalysisResults = mock(AnalysisResults.class);
 
         // When
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
         when(mockNlu.analyze(any())).thenReturn(mockServiceCall);
         when(mockServiceCall.execute()).thenReturn(mockResponse);
         when(mockResponse.getResult()).thenReturn(mockAnalysisResults);
@@ -127,7 +124,7 @@ class RestControllerSearchTest {
                 .accept("application/json"));
         checkJsonPathSuccessReturn(resultActions.andExpect(status().isOk()));
         // Verify
-        verify(mockHttpRequest, times(1)).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl, times(1)).sendRequest(any(URL.class));
         verify(mockNlu, times(1)).analyze(any());
 
     }
@@ -140,7 +137,7 @@ class RestControllerSearchTest {
 
 
         // When
-        when(mockHttpRequest.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
+        when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
 
         // Then
         var resultActions = mvc.perform(get("/search")
@@ -148,7 +145,7 @@ class RestControllerSearchTest {
                 .accept("application/json"));
         resultActions.andExpect(status().isBadRequest());
         // Verify
-        verify(mockHttpRequest, times(1)).sendRequest(any(URL.class));
+        verify(mockHttpRequestServiceImpl, times(1)).sendRequest(any(URL.class));
 
 
     }
@@ -156,7 +153,7 @@ class RestControllerSearchTest {
     void should_Return_As_Response_Status_FailedDependency_Request_When_ScaleAPIException_Is_Throw() throws Exception {
 
         // When
-        doThrow(ScaleAPIException.class).when(spyScaleAPIRequest).getResponse(any(RequestParameters.class));
+        doThrow(ScaleAPIException.class).when(spyScaleAPIRequestServiceImpl).getResponse(any(RequestParameters.class));
 
         // Then
         var resultActions = mvc.perform(get("/search")
@@ -170,13 +167,21 @@ class RestControllerSearchTest {
     void when_Find_Should_Return_As_Response_StatusOK_With_SearchHistory_Given_Id() throws Exception {
         //Given
         SearchHistory searchHistory = new SearchHistory();
+        StorageResult storage = new StorageResult();
+        storage.setSearchHistory(searchHistory);
+        StorageResult storage2 = new StorageResult();
+        storage2.setSearchHistory(searchHistory);
+        StorageResult storage3 = new StorageResult();
+        storage3.setSearchHistory(searchHistory);
+        searchHistory.getStorageResults().addAll(List.of(storage,storage2,storage3));
         spySearchHistoryRepository.save(searchHistory);
         Long id = spySearchHistoryRepository.findAll().get(0).getId();
         //Then
         mvc.perform(get("/search/history/find/" + id)
                 .accept("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.is(id.intValue())));
+                .andExpect(jsonPath("$.id", Matchers.is(id.intValue())))
+                .andExpect(jsonPath("$.storageResults", Matchers.hasSize(3)));
         //Verify
         verify(spySearchHistoryRepository, times(1)).findById(id);
 
@@ -279,19 +284,19 @@ class RestControllerSearchTest {
                         Matchers.is("https://g1.globo.com/")))
                 .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.id",
                         Matchers.greaterThan(0)))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteName",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.name",
                         Matchers.is("g1")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteDescription",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.description",
                         Matchers.is("")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteLogo",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.logo",
                         Matchers.is("")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteDomain",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.domain",
                         Matchers.is("https://g1.globo.com/")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteLanguage",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.language",
                         Matchers.is("pt-br")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteCountry",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.country",
                         Matchers.is("Brazil")))
-                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.siteLanguage",
+                .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.language",
                         Matchers.is("pt-br")))
                 .andExpect(jsonPath("$.storageResults[0].registeredSite.siteConfiguration.scrapingType",
                         Matchers.is("STATIC")))
@@ -348,7 +353,8 @@ class RestControllerSearchTest {
                 .andExpect(jsonPath("$.storageResults[0].searchInfo.url",
                         Matchers.is("https://g1.globo.com/politica/blog/valdo-cruz/post/2022/04/19/pacote-de-bondades-de-bolsonaro-por-reeleicao-obriga-quem-estiver-no-poder-em-2023-a-fazer-ajuste-fiscal.ghtml")))
                 .andExpect(jsonPath("$.storageResults[0].searchInfo.snippet",
-                        Matchers.is("A série de medidas do governo conhecida como pacote de \"bondades\", adotada pelo presidente Jair Bolsonaro em busca da reeleição,...")));
+                        Matchers.is("A série de medidas do governo conhecida como pacote de \"bondades\", adotada pelo presidente Jair Bolsonaro em busca da reeleição,...")))
+                .andReturn();
 
     }
 }

@@ -1,6 +1,6 @@
 package com.example.newsbackend.service;
 
-import com.example.newsbackend.repository.storage.SearchHistory;
+import com.example.newsbackend.entity.search.SearchHistory;
 
 import java.util.List;
 import java.util.Map;

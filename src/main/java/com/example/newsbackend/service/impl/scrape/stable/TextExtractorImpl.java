@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class TextExtractor implements TextExtractorService {
+public class TextExtractorImpl implements TextExtractorService {
     public String extractTextFromInputStream(InputStream inputStream) throws IOException {
 
         String html = getStringFromInputStream(inputStream);

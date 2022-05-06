@@ -1,4 +1,4 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
 import com.example.newsbackend.exception.PageValidatorException;
 import com.example.newsbackend.entity.sites.RegisteredSite;

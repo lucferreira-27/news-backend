@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.impl.scrape;
+package com.example.newsbackend.exception;
 
 public class ScrapingException extends Exception {
     public ScrapingException(String message) {

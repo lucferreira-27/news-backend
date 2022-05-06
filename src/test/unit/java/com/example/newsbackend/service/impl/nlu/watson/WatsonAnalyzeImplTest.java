@@ -12,9 +12,9 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class WatsonAnalyzeTest {
+class WatsonAnalyzeImplTest {
 
-    private WatsonAnalyze mockWatsonAnalyzeUnderTest;
+    private WatsonAnalyzeImpl mockWatsonAnalyzeImplUnderTest;
 
 
     @Mock
@@ -23,7 +23,7 @@ class WatsonAnalyzeTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockWatsonAnalyzeUnderTest = new WatsonAnalyze(mockNaturalLanguageUnderstanding);
+        mockWatsonAnalyzeImplUnderTest = new WatsonAnalyzeImpl(mockNaturalLanguageUnderstanding);
     }
 
     @Test
@@ -44,7 +44,7 @@ class WatsonAnalyzeTest {
         when(mockResponse.getResult()).thenReturn(expectResult);
 
         // Then
-        AnalysisResults analyseResult = mockWatsonAnalyzeUnderTest.analyze(options);
+        AnalysisResults analyseResult = mockWatsonAnalyzeImplUnderTest.analyze(options);
         assertEquals(expectResult, analyseResult);
         verify(mockNaturalLanguageUnderstanding, times(1)).analyze(any());
         verify(mockServiceCall, times(1)).execute();

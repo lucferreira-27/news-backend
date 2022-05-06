@@ -6,11 +6,11 @@ import com.ibm.watson.natural_language_understanding.v1.model.*;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WatsonAnalyze implements AnalyzeService<WatsonAnalyzeOptions> {
+public class WatsonAnalyzeImpl implements AnalyzeService<WatsonAnalyzeOptions> {
 
     private  NaturalLanguageUnderstanding nluService;
 
-    public WatsonAnalyze(NaturalLanguageUnderstanding nluService)  {
+    public WatsonAnalyzeImpl(NaturalLanguageUnderstanding nluService)  {
         this.nluService = nluService;
 
     }

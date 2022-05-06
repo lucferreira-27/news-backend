@@ -5,7 +5,7 @@ import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WatsonAuthImpl implements AuthService {
+public class WatsonAuthServiceImpl implements AuthService {
     public IamAuthenticator getIamAuthenticator(String apikey){
         IamAuthenticator authenticator = new IamAuthenticator
                 .Builder()

@@ -1,4 +1,4 @@
-package com.example.newsbackend.entity;
+package com.example.newsbackend.entity.sites;
 
 import javax.persistence.*;
 import java.util.ArrayList;

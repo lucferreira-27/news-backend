@@ -1,5 +1,6 @@
-package com.example.newsbackend.entity;
+package com.example.newsbackend.entity.nlu;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public abstract class ContentAnaliseResult  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     @Column(name = "id", nullable = false)
     private Long id;
 

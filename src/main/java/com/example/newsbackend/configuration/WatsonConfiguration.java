@@ -1,6 +1,6 @@
 package com.example.newsbackend.configuration;
 
-import com.example.newsbackend.service.nlu.watson.WatsonAuth;
+import com.example.newsbackend.service.impl.nlu.watson.WatsonAuthServiceImpl;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ public class WatsonConfiguration {
         @Value("${watson.nlu.apikey}")
         private String apikey;
         @Autowired
-        private WatsonAuth auth;
+        private WatsonAuthServiceImpl auth;
         @Bean
         public NaturalLanguageUnderstanding naturalLanguageUnderstanding() {
             return new NaturalLanguageUnderstanding(version,auth.getIamAuthenticator(apikey));

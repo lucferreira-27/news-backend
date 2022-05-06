@@ -1,9 +1,10 @@
-package com.example.newsbackend.service.impl.scrape.dynamic;
+package com.example.newsbackend.service.scrape;
 
+import com.example.newsbackend.service.impl.scrape.dynamic.EmuBrowserConfiguration;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface EmuBrowser {
+public interface EmuBrowserService {
 
     public void init(EmuBrowserConfiguration configuration);
     public void reinit();

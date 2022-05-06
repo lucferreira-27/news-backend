@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.impl.scrape.dynamic;
+package com.example.newsbackend.exception;
 
 public class EmuBrowserException extends RuntimeException {
 

@@ -1,6 +1,8 @@
-package com.example.newsbackend.service.nlu.watson;
+package com.example.newsbackend.service.impl.nlu.watson;
 
-public class WatsonAnalyzeOptions {
+import com.example.newsbackend.service.nlu.AnalyzeOptions;
+
+public class WatsonAnalyzeOptions implements AnalyzeOptions {
     private String text;
     private Integer conceptsLimit;
     private Integer entitiesLimit;

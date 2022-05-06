@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.serp;
+package com.example.newsbackend.exception;
 
 import com.example.newsbackend.exception.BadRequestException;
 

@@ -1,4 +1,4 @@
-package com.example.newsbackend.entity;
+package com.example.newsbackend.entity.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -16,7 +16,7 @@ public class SearchHistory {
     @JsonFormat(pattern = "YYYY-MM-dd HH:mm")
     private LocalDateTime date;
     private String searchTerm;
-    @OneToMany(mappedBy = "searchHistory")
+    @OneToMany(mappedBy = "searchHistory", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<StorageResult> storageResults = new ArrayList<>();
     public Long getId() {
         return id;

@@ -1,4 +1,4 @@
-package com.example.newsbackend.service.nlu;
+package com.example.newsbackend.exception;
 
 public class NLUException extends Exception {
 

@@ -1,12 +1,17 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.repository.sites.RegisteredSite;
+import com.example.newsbackend.entity.sites.RegisteredSite;
+import com.example.newsbackend.entity.search.SearchInfoResult;
+import com.example.newsbackend.entity.search.StorageResult;
+import com.example.newsbackend.entity.search.StorageStatus;
 import com.example.newsbackend.repository.storage.*;
-import com.example.newsbackend.repository.storage.analise.WatsonAnaliseResult;
-import com.example.newsbackend.repository.page.PageBody;
-import com.example.newsbackend.service.nlu.watson.WatsonNLUService;
-import com.example.newsbackend.service.scrape.ScrapingException;
-import com.example.newsbackend.service.serp.NewsResultPage;
+import com.example.newsbackend.entity.nlu.WatsonAnaliseResult;
+import com.example.newsbackend.exception.PageValidatorException;
+import com.example.newsbackend.service.ResultAnalysisService;
+import com.example.newsbackend.service.impl.nlu.watson.WatsonNLUServiceImpl;
+import com.example.newsbackend.exception.ScrapingException;
+import com.example.newsbackend.service.impl.scrape.PageBody;
+import com.example.newsbackend.service.impl.serp.NewsResultPage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +23,7 @@ import java.util.Optional;
 public class ResultAnalysisServiceImpl implements ResultAnalysisService {
 
     private final ParseNewsServiceImpl parseNewsService;
-    private final WatsonNLUService watsonNLUService;
+    private final WatsonNLUServiceImpl watsonNLUServiceImpl;
     private final StorageResultRepository storageResultRepository;
     private final Map<Class<? extends Exception>, String> mapStatusMessages = new HashMap<>();
     private final Map<Class<? extends Exception>, StorageStatus> mapStatus = new HashMap<>();
@@ -31,17 +36,13 @@ public class ResultAnalysisServiceImpl implements ResultAnalysisService {
 
     }
 
-    public ResultAnalysisServiceImpl(ParseNewsServiceImpl parseNewsService, WatsonNLUService watsonNLUService,
+    public ResultAnalysisServiceImpl(ParseNewsServiceImpl parseNewsService, WatsonNLUServiceImpl watsonNLUServiceImpl,
                                      StorageResultRepository storageResultRepository) {
         this.parseNewsService = parseNewsService;
-        this.watsonNLUService = watsonNLUService;
+        this.watsonNLUServiceImpl = watsonNLUServiceImpl;
         this.storageResultRepository = storageResultRepository;
     }
 
-
-    private void saveResult(StorageResult result) {
-        storageResultRepository.save(result);
-    }
 
     @Override
     public StorageResult analysis(NewsResultPage newsResultPage) {
@@ -54,7 +55,7 @@ public class ResultAnalysisServiceImpl implements ResultAnalysisService {
         try {
             RegisteredSite registeredSite = validatePage(storageResult, newsResultPage.getLink());
             PageBody pageBody = parseNewsService.getNewsPageBody(newsResultPage, registeredSite);
-            String jsonAnalyseResult = watsonNLUService.startAnalysis(pageBody.getTextContent());
+            String jsonAnalyseResult = watsonNLUServiceImpl.startAnalysis(pageBody.getTextContent());
             setAnalysisJsonResponseInStorage(storageResult, jsonAnalyseResult);
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +67,6 @@ public class ResultAnalysisServiceImpl implements ResultAnalysisService {
         } finally {
             storageResult.setAnalysisTime(endTime(time));
             setSearchInfoFromNewsPage(newsResultPage, storageResult);
-            saveResult(storageResult);
             return storageResult;
         }
 

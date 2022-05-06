@@ -12,13 +12,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class TextExtractorTest {
+class TextExtractorImplTest {
 
-    private TextExtractor textExtractorUnderTest;
+    private TextExtractorImpl textExtractorImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        textExtractorUnderTest = new TextExtractor();
+        textExtractorImplUnderTest = new TextExtractorImpl();
     }
 
     @Test
@@ -28,7 +28,7 @@ class TextExtractorTest {
         final InputStream inputStream = new ByteArrayInputStream(expectResult.getBytes());
 
         // Then
-        final String result = textExtractorUnderTest.extractTextFromInputStream(inputStream);
+        final String result = textExtractorImplUnderTest.extractTextFromInputStream(inputStream);
 
         // Verify
         assertThat(result).isEqualTo(expectResult);
@@ -41,7 +41,7 @@ class TextExtractorTest {
         final InputStream inputStream = InputStream.nullInputStream();
         final String expectResult = "";
         // Run the test
-        final String result = textExtractorUnderTest.extractTextFromInputStream(inputStream);
+        final String result = textExtractorImplUnderTest.extractTextFromInputStream(inputStream);
 
         // Verify the results
         assertThat(result).isEqualTo(expectResult);
@@ -56,7 +56,7 @@ class TextExtractorTest {
         when(mockInputStream.read()).thenThrow(IOException.class);
 
         // Verify
-        assertThatThrownBy(() -> textExtractorUnderTest.extractTextFromInputStream(mockInputStream))
+        assertThatThrownBy(() -> textExtractorImplUnderTest.extractTextFromInputStream(mockInputStream))
                 .isInstanceOf(IOException.class);
     }
 

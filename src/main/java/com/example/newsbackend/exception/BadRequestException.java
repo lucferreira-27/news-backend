@@ -1,4 +1,4 @@
-package com.example.newsbackend.service;
+package com.example.newsbackend.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
