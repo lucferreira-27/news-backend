@@ -1,7 +1,6 @@
-package com.example.newsbackend.service.nlu;
+package com.example.newsbackend.service.impl.nlu;
 
-import com.example.newsbackend.service.nlu.watson.WatsonAnalyseResult;
-import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
+import com.example.newsbackend.exception.NLUException;
 
 public interface NaturalLanguageUnderstandingService {
     public String startAnalysis(String text) throws NLUException;
