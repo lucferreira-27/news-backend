@@ -23,7 +23,7 @@ public class RestControllerRegisteredSites {
         this.registeredSitesService = registeredSitesService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<RegisteredSite> addSite(@RequestBody @Validated RegisteredSiteDto registeredSite, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -36,34 +36,28 @@ public class RestControllerRegisteredSites {
 
         RegisteredSite newRegisteredSite = registeredSitesService.saveSite(registeredSite);
         return ResponseEntity
-                .created(ServletUriComponentsBuilder.fromPath("/api/v1/sites/find/{id}")
+                .created(ServletUriComponentsBuilder.fromPath("/api/v1/sites/{id}")
                         .buildAndExpand(newRegisteredSite.getId())
                         .toUri())
                 .build();
     }
 
-    @GetMapping("/find/all")
+    @GetMapping("/")
     public ResponseEntity<Iterable<RegisteredSite>> getAllSites() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(registeredSitesService.findAllSites());
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<RegisteredSite> getSiteById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(registeredSitesService.findSiteById(id));
     }
 
-    @GetMapping("/find/filter")
-    public ResponseEntity<RegisteredSite> getSiteByFilterURL(@RequestParam String url) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(registeredSitesService.findSiteByUrl(url));
-    }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<RegisteredSite> updateSite(@PathVariable Long id, @RequestBody RegisteredSiteDto registeredSiteDto) {
 
         return ResponseEntity
@@ -72,7 +66,7 @@ public class RestControllerRegisteredSites {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<RegisteredSite> deleteSite(@PathVariable Long id) {
         registeredSitesService.deleteSiteById(id);
         return ResponseEntity
@@ -80,11 +74,5 @@ public class RestControllerRegisteredSites {
                 .build();
     }
 
-    @DeleteMapping("/delete/all")
-    public ResponseEntity<RegisteredSite> deleteAllSites() {
-        registeredSitesService.deleteAllSites();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
+
 }

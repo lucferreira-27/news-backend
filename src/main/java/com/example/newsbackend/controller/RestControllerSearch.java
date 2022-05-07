@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/search")
+@RequestMapping("/api/v1/histories")
 public class RestControllerSearch {
 
     private final SearchHistoryServiceImpl searchHistoryPageService;
@@ -18,7 +18,7 @@ public class RestControllerSearch {
         this.searchHistoryPageService = searchHistoryPageService;
     }
 
-    @GetMapping("/")
+    @PostMapping("/search")
     public ResponseEntity<SearchHistory> search(@RequestParam String q, @RequestParam Map<String, String> allRequestParams) {
 
         SearchHistory searchHistory = searchHistoryPageService.search(q, allRequestParams);
@@ -27,33 +27,27 @@ public class RestControllerSearch {
 
     }
 
-    @GetMapping("/history/find/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SearchHistory> findSearchHistory(@PathVariable Long id) {
         SearchHistory searchHistory = searchHistoryPageService.findById(id);
         return ResponseEntity.ok(searchHistory);
 
     }
 
-    @DeleteMapping("/history/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<SearchHistory> deleteSearchHistory(@PathVariable Long id) {
         searchHistoryPageService.deleteById(id);
         return ResponseEntity.accepted().build();
 
     }
 
-    @GetMapping("/history/find/all")
+    @GetMapping("/")
     public ResponseEntity<List<SearchHistory>> findAllSearchHistory() {
         List<SearchHistory> searchHistoryList = searchHistoryPageService.findAll();
         return ResponseEntity.ok(searchHistoryList);
 
     }
 
-    @DeleteMapping("/history/delete/all")
-    public ResponseEntity<SearchHistory> deleteAllSearchHistory() {
-        searchHistoryPageService.deleteAll();
-        return ResponseEntity.accepted().build();
-
-    }
 
 
 }

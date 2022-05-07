@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StorageResultResultServiceImpl implements StorageResultService {
+public class StorageResultServiceImpl implements StorageResultService {
 
     private final StorageResultRepository storageResultRepository;
 
-    public StorageResultResultServiceImpl(StorageResultRepository storageResultRepository) {
+    public StorageResultServiceImpl(StorageResultRepository storageResultRepository) {
         this.storageResultRepository = storageResultRepository;
     }
 

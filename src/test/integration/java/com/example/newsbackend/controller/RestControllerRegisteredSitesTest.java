@@ -67,12 +67,12 @@ class RestControllerRegisteredSitesTest {
         int totalRegisteredSites = registeredSiteRepository.findAll().size();
 
         //Verify
-        mvc.perform(post("/api/v1/sites/add")
+        mvc.perform(post("/api/v1/sites/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(registeredSiteDto))
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
-                .andExpect(redirectedUrlPattern("/api/v1/sites/find/**"))
+                .andExpect(redirectedUrlPattern("/api/v1/sites/**"))
                         .andReturn();
         assertThat( registeredSiteRepository.findAll().size()).isEqualTo(totalRegisteredSites + 1);
     }
@@ -97,7 +97,7 @@ class RestControllerRegisteredSitesTest {
                 .build();
 
         //Verify
-        mvc.perform(post("/api/v1/sites/add")
+        mvc.perform(post("/api/v1/sites/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(registeredSiteDto))
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -133,7 +133,7 @@ class RestControllerRegisteredSitesTest {
         registeredSiteRepository.save(RegisteredSite.fromRegisteredSiteDto(registeredSiteDto));
 
         //Verify
-        mvc.perform(post("/api/v1/sites/add")
+        mvc.perform(post("/api/v1/sites/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(registeredSiteDto))
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -148,7 +148,7 @@ class RestControllerRegisteredSitesTest {
         //Given
         RegisteredSite registeredSite = registeredSiteRepository.findAll().get(0);
         //Verify
-        mvc.perform(get("/api/v1/sites/find/"+registeredSite.getId()))
+        mvc.perform(get("/api/v1/sites/"+registeredSite.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id")
                         .value(registeredSite.getId()))
@@ -177,47 +177,12 @@ class RestControllerRegisteredSitesTest {
     void when_Find_If_No_Resource_Found_Should_Return_As_Response_StatusNotFound_Given_Id() throws Exception {
 
         //Verify
-         mvc.perform(get("/api/v1/sites/find/0"))
+         mvc.perform(get("/api/v1/sites/0"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Site with ID \"0\" not found"));
 
     }
-    @Test
-    void when_Find_Should_Return_As_Response_StatusOK_With_RegisteredSite_Given_Url() throws Exception {
-        //Given
-        RegisteredSite registeredSite = registeredSiteRepository.findAll().get(0);
-        //Verify
-        mvc.perform(get("/api/v1/sites/find/filter/?url=" + registeredSite.getUrl()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id")
-                        .value(registeredSite.getId()))
-                .andExpect(jsonPath("$.url")
-                        .value(registeredSite.getUrl()))
-                .andExpect(jsonPath("$.siteConfiguration.domain")
-                        .value(registeredSite.getSiteConfiguration().getDomain()))
-                .andExpect(jsonPath("$.siteConfiguration.language")
-                        .value(registeredSite.getSiteConfiguration().getLanguage()))
-                .andExpect(jsonPath("$.siteConfiguration.logo")
-                        .value(registeredSite.getSiteConfiguration().getLogo()))
-                .andExpect(jsonPath("$.siteConfiguration.country")
-                        .value(registeredSite.getSiteConfiguration().getCountry()))
-                .andExpect(jsonPath("$.siteConfiguration.keywords.length()")
-                        .value(registeredSite.getSiteConfiguration().getKeywords().size()))
-                .andExpect(jsonPath("$.siteConfiguration.scrapingType")
-                        .value(registeredSite.getSiteConfiguration().getScrapingType().name()))
-                .andExpect(jsonPath("$.siteConfiguration.selectorQueries[0].selector")
-                        .value(registeredSite.getSiteConfiguration().getSelectorQueries().get(0).getSelector()));
-    }
-    @Test
-    void when_Find_If_No_Resource_Should_Return_As_Response_StatusNotFound_Given_Url() throws Exception {
 
-        //Verify
-        mvc.perform(get("/api/v1/sites/find/filter/?url=www.test.com"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message")
-                        .value("Site with URL \"www.test.com\" not found"));
-
-    }
 
     @Test
     void when_DeleteById_Should_Return_As_Response_StatusOk_Given_Id() throws Exception {
@@ -228,7 +193,7 @@ class RestControllerRegisteredSitesTest {
         //Given
         RegisteredSite registeredSite = registeredSiteRepository.findAll().get(0);
         //Verify
-        mvc.perform(delete("/api/v1/sites/delete/" + registeredSite.getId()))
+        mvc.perform(delete("/api/v1/sites/" + registeredSite.getId()))
                 .andExpect(status().isOk());
     }
     @Test
@@ -237,20 +202,11 @@ class RestControllerRegisteredSitesTest {
 
 
         //Verify
-        mvc.perform(delete("/api/v1/sites/delete/0"))
+        mvc.perform(delete("/api/v1/sites/0"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Registered site with id \"0\" not found"));
     }
 
-    @Test
-    void when_DeleteAll_Should_Return_As_Response_StatusOk() throws Exception {
-
-        //When
-        doNothing().when(registeredSiteRepository).deleteAll();
-        //Verify
-        mvc.perform(delete("/api/v1/sites/delete/all"))
-                .andExpect(status().isOk());
-    }
 
     @Test
     void when_Update_Should_Return_As_Response_StatusOk() throws Exception {
@@ -264,7 +220,7 @@ class RestControllerRegisteredSitesTest {
                 .url("www.updated.com")
                 .build();
         //Verify
-        mvc.perform(put("/api/v1/sites/update/" + registeredSite.getId())
+        mvc.perform(put("/api/v1/sites/" + registeredSite.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(registeredSiteDto)))
                 .andExpect(status().isOk())

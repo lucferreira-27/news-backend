@@ -37,8 +37,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,7 +84,7 @@ class RestControllerSearchTest {
         when(mockResponse.getResult()).thenReturn(mockAnalysisResults);
         when(mockAnalysisResults.toString()).thenReturn(thirdPartyWatsonResponse);
         // Then
-        var resultActions = mvc.perform(get("/search")
+        var resultActions = mvc.perform(post("/api/v1/histories/search")
                 .param("q", "bolsonaro")
                 .accept("application/json"));
         checkJsonPathSuccessReturn(resultActions.andExpect(status().isOk()));
@@ -114,7 +113,7 @@ class RestControllerSearchTest {
         when(mockResponse.getResult()).thenReturn(mockAnalysisResults);
         when(mockAnalysisResults.toString()).thenReturn(thirdPartyWatsonResponse);
         // Then
-        var resultActions = mvc.perform(get("/search")
+        var resultActions = mvc.perform(post("/api/v1/histories/search")
                 .param("q", "bolsonaro")
                 .param("lang", "pt")
                 .param("sortBy", "relevance")
@@ -140,7 +139,7 @@ class RestControllerSearchTest {
         when(mockHttpRequestServiceImpl.sendRequest(any(URL.class))).thenReturn(thirdPartyScaleResponse);
 
         // Then
-        var resultActions = mvc.perform(get("/search")
+        var resultActions = mvc.perform(post("/api/v1/histories/search")
                 .param("q", "bolsonaro")
                 .accept("application/json"));
         resultActions.andExpect(status().isBadRequest());
@@ -156,7 +155,7 @@ class RestControllerSearchTest {
         doThrow(ScaleAPIException.class).when(spyScaleAPIRequestServiceImpl).getResponse(any(RequestParameters.class));
 
         // Then
-        var resultActions = mvc.perform(get("/search")
+        var resultActions = mvc.perform(post("/api/v1/histories/search")
                 .param("q", "bolsonaro")
                 .accept("application/json"));
         resultActions.andExpect(status().isBadRequest());
@@ -177,7 +176,7 @@ class RestControllerSearchTest {
         spySearchHistoryRepository.save(searchHistory);
         Long id = spySearchHistoryRepository.findAll().get(0).getId();
         //Then
-        mvc.perform(get("/search/history/find/" + id)
+        mvc.perform(get("/api/v1/histories/" + id)
                 .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", Matchers.is(id.intValue())))
@@ -188,14 +187,15 @@ class RestControllerSearchTest {
     }
     @Test
     void when_Find_Should_Return_As_Response_StatusNotFound_Given_Id() throws Exception {
-
+        //Given
+        final Long id = 1L;
         //Then
-        mvc.perform(get("/search/history/find/1")
+        mvc.perform(get("/api/v1/histories/" + id)
                         .accept("application/json"))
                 .andExpect(status().isNotFound());
 
         //Verify
-        verify(spySearchHistoryRepository, times(1)).findById(1L);
+        verify(spySearchHistoryRepository, times(1)).findById(id);
 
     }
     @Test
@@ -205,7 +205,7 @@ class RestControllerSearchTest {
         spySearchHistoryRepository.saveAll(List.of(new SearchHistory(),new SearchHistory(),new SearchHistory()));
 
         //Then
-        mvc.perform(get("/search/history/find/all")
+        mvc.perform(get("/api/v1/histories/")
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.is(3)));
@@ -215,15 +215,16 @@ class RestControllerSearchTest {
     }
     @Test
     void when_Delete_should_Return_As_Response_StatusNotFound_Given_Id() throws Exception {
-
+        //Given
+        final Long id = 1L;
 
         //Then
-        mvc.perform(delete("/search/history/delete/1")
+        mvc.perform(delete("/api/v1/histories/" + id)
                         .accept("application/json"))
                 .andExpect(status().isNotFound());
         //Verify
-        verify(spySearchHistoryRepository, times(1)).existsById(1L);
-        verify(spySearchHistoryRepository, never()).deleteById(1L);
+        verify(spySearchHistoryRepository, times(1)).existsById(id);
+        verify(spySearchHistoryRepository, never()).deleteById(id);
 
     }
     @Test
@@ -233,8 +234,9 @@ class RestControllerSearchTest {
         SearchHistory searchHistory = new SearchHistory();
         spySearchHistoryRepository.save(searchHistory);
         Long id = spySearchHistoryRepository.findAll().get(0).getId();
+
         //Then
-        mvc.perform(delete("/search/history/delete/"+id)
+        mvc.perform(delete("/api/v1/histories/" + id)
                         .accept("application/json"))
                 .andExpect(status().isAccepted());
         //Verify
@@ -242,19 +244,7 @@ class RestControllerSearchTest {
         assertThat(spySearchHistoryRepository.existsById(id)).isFalse();
 
     }
-    @Test
-    void when_Delete_All_should_Return_As_Response_StatusAccepted() throws Exception {
-        //Given
-        spySearchHistoryRepository.saveAll(List.of(new SearchHistory(),new SearchHistory(),new SearchHistory()));
 
-        //Then
-        mvc.perform(delete("/search/history/delete/all")
-                        .accept("application/json"))
-                .andExpect(status().isAccepted());
-        //Verify
-        assertThat(spySearchHistoryRepository.findAll().size()).isEqualTo(0);
-
-    }
 
 
     private String readTextFromFile(String name) throws IOException {
@@ -312,18 +302,12 @@ class RestControllerSearchTest {
                         Matchers.is("OK")))
                 .andExpect(jsonPath("$.storageResults[0].analysisTime",
                         Matchers.is(Matchers.greaterThan(100))))
-                .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.id",
-                        Matchers.greaterThan(0)))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.language",
                         Matchers.is("pt")))
-                .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.concepts[0].id",
-                        Matchers.greaterThan(0)))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.concepts[0].text",
                         Matchers.is("Imposto")))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.concepts[0].relevance",
                         Matchers.is(0.994197)))
-                .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.entities[0].id",
-                        Matchers.greaterThan(0)))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.entities[0].text",
                         Matchers.is("Bolsonaro")))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.entities[0].relevance",
@@ -336,8 +320,6 @@ class RestControllerSearchTest {
                         Matchers.is(1.0)))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.entities[0].sentimentScore",
                         Matchers.is(0.0)))
-                .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.keywords[0].id",
-                        Matchers.greaterThan(0)))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.keywords[0].text",
                         Matchers.is("presidente Jair Bolsonaro")))
                 .andExpect(jsonPath("$.storageResults[0].contentAnaliseResult.keywords[0].relevance",
