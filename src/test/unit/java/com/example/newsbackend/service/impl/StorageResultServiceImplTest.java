@@ -1,6 +1,5 @@
 package com.example.newsbackend.service.impl;
 
-import com.example.newsbackend.entity.search.SearchHistory;
 import com.example.newsbackend.entity.search.StorageResult;
 import com.example.newsbackend.repository.storage.StorageResultRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class StorageResultResultServiceImplTest {
+class StorageResultServiceImplTest {
 
-    private StorageResultResultServiceImpl storageResultResultService;
+    private StorageResultServiceImpl storageResultResultService;
 
     @Mock
     private StorageResultRepository mockStorageResultRepository;
@@ -26,7 +24,7 @@ class StorageResultResultServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        storageResultResultService = new StorageResultResultServiceImpl(mockStorageResultRepository);
+        storageResultResultService = new StorageResultServiceImpl(mockStorageResultRepository);
     }
 
     @Test
