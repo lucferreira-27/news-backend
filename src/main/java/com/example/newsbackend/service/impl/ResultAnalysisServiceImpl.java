@@ -88,7 +88,12 @@ public class ResultAnalysisServiceImpl implements ResultAnalysisService {
     }
 
     private void setAnalysisJsonResponseInStorage(StorageResult storageResult, String jsonResponse) throws JsonProcessingException {
-        storageResult.setContentAnaliseResult(WatsonAnaliseResult.fromJson(jsonResponse));
+        WatsonAnaliseResult watsonAnaliseResult = WatsonAnaliseResult.fromJson(jsonResponse);
+        watsonAnaliseResult.getConcepts().forEach(concept -> concept.setWatsonAnaliseResult(watsonAnaliseResult));
+        watsonAnaliseResult.getEntities().forEach(entity -> entity.setWatsonAnaliseResult(watsonAnaliseResult));
+        watsonAnaliseResult.getKeywords().forEach(keyword -> keyword.setWatsonAnaliseResult(watsonAnaliseResult));
+
+        storageResult.setContentAnaliseResult(watsonAnaliseResult);
         storageResult.setStatus(StorageStatus.SUCCESS, "OK");
     }
 
